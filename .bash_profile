@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -7,11 +10,33 @@ if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
+# append to the history file, don't overwrite it
+shopt -s histappend
+# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+# correct minor errors in the spelling of a directory component in a cd command
+shopt -s cdspell
+# save all lines of a multiple-line command in the same history entry (allows easy re-editing of multi-line commands)
+shopt -s cmdhist
+
+#disable Ctrl+s freeze
+stty -ixon
+
 alias ll='ls -liahs --color=auto'
 alias rmrf='rm -rf'
 alias duh='du -h --max-depth=0'
 #alias fclzma='fusecompress -o fc_c:lzma,nonempty,allow_other'
 alias cls="clear"
+
+# User specific environment and startup programs
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+export PATH
+
+# don't put duplicate lines in the history
+export HISTCONTROL=ignoreboth,erasedups
+# set history length
+HISTFILESIZE=1000000000
+HISTSIZE=1000000
 
 export EDITOR="vim"
 export PERL_LOCAL_LIB_ROOT="$HOME/perl5";
@@ -21,7 +46,6 @@ export PERL5LIB="$HOME/perl5/lib/perl5/x86_64-linux-thread-multi:$HOME/perl5/lib
 export PATH="$HOME/perl5/bin:$PATH";
 export DISPLAY=localhost:10.0
 export XAUTHORITY=$HOME/.Xauthority
-export HISTSIZE=42000
 
 mvln(){
 	mv $1 $2
@@ -61,3 +85,4 @@ function prompt_command {
     [[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
 }
 PROMPT_COMMAND=prompt_command
+
