@@ -21,12 +21,16 @@ shopt -s cmdhist
 
 #disable Ctrl+s freeze
 stty -ixon
+# this is for delete words by ^W
+tty -s && stty werase ^- 2>/dev/null
 
 alias ll='ls -liahs --color=auto'
 alias rmrf='rm -rf'
 alias duh='du -h --max-depth=0'
 #alias fclzma='fusecompress -o fc_c:lzma,nonempty,allow_other'
 alias cls="clear"
+alias :q="exit"
+alias ..="cd .."
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
@@ -37,6 +41,9 @@ export HISTCONTROL=ignoreboth,erasedups
 # set history length
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
+
+# grep colorize
+export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
 export PERL_LOCAL_LIB_ROOT="$HOME/perl5";
@@ -85,4 +92,9 @@ function prompt_command {
     [[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
 }
 PROMPT_COMMAND=prompt_command
+
+# bash local
+if [ -f ~/.bash_local ]; then
+	. ~/.bash_local
+fi
 
