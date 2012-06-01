@@ -39,4 +39,13 @@ $if mode=emacs
 # for freebsd console
 "\e[H": beginning-of-line
 "\e[F": end-of-line
+
+#my
+set blink-matching-paren on
+set completion-ignore-case on
+
+"\C-r": history-search-backward
+"\C-s": history-search-forward
+
+"\C-w": backward-kill-word
 $endif
