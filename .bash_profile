@@ -1,14 +1,10 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-if [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
-fi
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
 
 # append to the history file, don't overwrite it
 shopt -s histappend
