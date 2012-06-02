@@ -96,7 +96,11 @@ fi
 
 function prompt_command {
 	local dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
-	local mainPrompt="[\[\e[32m\]\u\[\e[0m\]\s-\v\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] (\#)\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
+	local ucolor="\[\e[32m\]";
+	if [[ "${USER}" == "root" ]]; then
+		ucolor="\[\e[31m\]";
+	fi
+	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
 	local flen=${#mainPrompt}
 	local termTitle="\[\e]0;[\u@\h:\w]$\a"
 	export PS1="${termTitle}\n${mainPrompt}\n# "
