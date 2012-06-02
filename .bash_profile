@@ -20,7 +20,7 @@ stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
-if [[ $OSTYPE -eq "linux-gnu" ]]; then
+if [[ $OSTYPE == "linux-gnu" ]]; then
 	alias ls="ls --color=auto"
 	alias duh='du -h --max-depth=0'
 	alias free='free -m'
