@@ -40,7 +40,6 @@ alias :q="exit"
 alias ..="cd .."
 alias killa='killall -KILL'
 alias killk='kill -KILL'
-alias tail="tail -n 25"
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
