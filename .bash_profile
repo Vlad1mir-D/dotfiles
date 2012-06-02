@@ -56,17 +56,19 @@ HISTSIZE=1000000
 export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
-export PERL_LOCAL_LIB_ROOT="$HOME/perl5";
-export PERL_MB_OPT="--install_base $HOME/perl5";
-export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5";
-export PERL5LIB="$HOME/perl5/lib/perl5/x86_64-linux-thread-multi:$HOME/perl5/lib/perl5";
-export PATH="$HOME/perl5/bin:$PATH";
 export DISPLAY=localhost:10.0
 export XAUTHORITY=$HOME/.Xauthority
 
-#bunch of sync stuff
+#sync stuff
+pull_environ(){
+	local cwd=$PWD
+	wget http://lnetw.ru/environ.tar.bz2
+	tar jxfv environ.tar.bz2
+	rm environ.tar.bz2
+	cd $cwd
+}
 
-#bunch of some stuff
+#some stuff
 md() { mkdir -p "$@" && cd "$@"; }
 
 # setup color variables
