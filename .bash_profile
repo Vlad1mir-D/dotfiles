@@ -20,7 +20,7 @@ stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
-if [[ $OSTYPE == "linux-gnu" ]]; then
+if [[ $OSTYPE == "linux-gnu" || $OSTYPE == "cygwin" ]]; then
 	alias ls="ls --color=auto"
 	alias duh='du -h --max-depth=0'
 	alias free='free -m'
@@ -56,7 +56,9 @@ HISTSIZE=1000000
 export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
-export DISPLAY=localhost:10.0
+if [[ -z $DISPLAY ]]; then
+	[[ $OSTYPE != "cygwin" || -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
+fi
 export XAUTHORITY=$HOME/.Xauthority
 
 #sync stuff
@@ -100,18 +102,24 @@ function prompt_command {
 	if [[ "${USER}" == "root" ]]; then
 		ucolor="\[\e[31m\]";
 	fi
-	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
+	local time=""
+	if [[ $OSTYPE != "cygwin" ]]; then
+		time="\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
+	fi
+	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle="\[\e]0;[\u@\h:\w]$\a"
 	export PS1="${termTitle}\n${mainPrompt}\n# "
 
-	# get cursor position and add new line if we're not in first column
-	exec < /dev/tty
-	local OLDSTTY=$(stty -g)
-	stty raw -echo min 0
-	echo -en "\033[6n" > /dev/tty && read -sdR CURPOS
-	stty $OLDSTTY
-	[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
+	if [[ $OSTYPE != "cygwin" ]]; then
+		# get cursor position and add new line if we're not in first column
+		exec < /dev/tty
+		local OLDSTTY=$(stty -g)
+		stty raw -echo min 0
+		echo -en "\033[6n" > /dev/tty && read -sdR CURPOS
+		stty $OLDSTTY
+		[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
+	fi
 }
 PROMPT_COMMAND=prompt_command
 
