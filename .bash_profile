@@ -62,6 +62,7 @@ export XAUTHORITY=$HOME/.Xauthority
 #sync stuff
 pull_environ(){
 	local cwd=$PWD
+	cd ~
 	wget http://lnetw.ru/environ.tar.bz2
 	tar jxfv environ.tar.bz2
 	rm environ.tar.bz2
