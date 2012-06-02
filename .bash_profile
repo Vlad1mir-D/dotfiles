@@ -20,13 +20,30 @@ stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
-alias ll='ls -liahs --color=auto'
+if [[ $OSTYPE -eq "linux-gnu" ]]; then
+	alias ls="ls --color=auto"
+	alias duh='du -h --max-depth=0'
+	alias free='free -m'
+else
+	#bsd colorize
+	export CLICOLOR=1
+	export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
+
+	alias duh='du -h -d 0'
+	alias llw='ls -liahW'
+fi
+
+alias ll='ls -liahs'
 alias rmrf='rm -rf'
-alias duh='du -h --max-depth=0'
-#alias fclzma='fusecompress -o fc_c:lzma,nonempty,allow_other'
 alias cls="clear"
 alias :q="exit"
 alias ..="cd .."
+alias killa='killall -KILL'
+alias killk='kill -KILL'
+alias tail="tail -n 25"
+
+DLEN=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+export PS1='\[\e]0;[\u@\h \w]$\a\n[\[\e[32m\]\u\[\e[0m\]\s-\v\[\e[32m\]@\h \[\e[33m\]\w\[\e[0m\]] (\#)\[\e[$(($COLUMNS-$DLEN))G\](\D{%a, %d.%m.%y %T %z})\n# '
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
@@ -50,10 +67,10 @@ export PATH="$HOME/perl5/bin:$PATH";
 export DISPLAY=localhost:10.0
 export XAUTHORITY=$HOME/.Xauthority
 
-mvln(){
-	mv $1 $2
-	ln -s $2$1 ./
-}
+#bunch of sync stuff
+
+#bunch of some stuff
+md() { mkdir -p "$@" && cd "$@"; }
 
 # setup color variables
 color_is_on=

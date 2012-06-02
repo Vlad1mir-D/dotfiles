@@ -48,4 +48,9 @@ set completion-ignore-case on
 "\C-s": history-search-forward
 
 "\C-w": backward-kill-word
+
+#bsd for putty
+#"\e[3~": delete-char
+#"\e[1~": beginning-of-line
+#"\e[4~": end-of-line
 $endif
