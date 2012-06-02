@@ -42,9 +42,6 @@ alias killa='killall -KILL'
 alias killk='kill -KILL'
 alias tail="tail -n 25"
 
-DLEN=$(date +"%a, %d.%m.%y %T %z" | wc -m)
-export PS1='\[\e]0;[\u@\h \w]$\a\n[\[\e[32m\]\u\[\e[0m\]\s-\v\[\e[32m\]@\h \[\e[33m\]\w\[\e[0m\]] (\#)\[\e[$(($COLUMNS-$DLEN))G\](\D{%a, %d.%m.%y %T %z})\n# '
-
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export PATH
@@ -83,26 +80,32 @@ color_gray=
 color_bg_red=
 color_off=
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    color_is_on=true
-    color_red="\[$(/usr/bin/tput setaf 1)\]"
-    color_green="\[$(/usr/bin/tput setaf 2)\]"
-    color_yellow="\[$(/usr/bin/tput setaf 3)\]"
-    color_blue="\[$(/usr/bin/tput setaf 6)\]"
-    color_white="\[$(/usr/bin/tput setaf 7)\]"
-    color_gray="\[$(/usr/bin/tput setaf 8)\]"
-    color_off="\[$(/usr/bin/tput sgr0)\]"
-    color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
-    color_error_off="$(/usr/bin/tput sgr0)"
+	color_is_on=true
+	color_red="\[$(/usr/bin/tput setaf 1)\]"
+	color_green="\[$(/usr/bin/tput setaf 2)\]"
+	color_yellow="\[$(/usr/bin/tput setaf 3)\]"
+	color_blue="\[$(/usr/bin/tput setaf 6)\]"
+	color_white="\[$(/usr/bin/tput setaf 7)\]"
+	color_gray="\[$(/usr/bin/tput setaf 8)\]"
+	color_off="\[$(/usr/bin/tput sgr0)\]"
+	color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
+	color_error_off="$(/usr/bin/tput sgr0)"
 fi
 
 function prompt_command {
-    # get cursor position and add new line if we're not in first column
-    exec < /dev/tty
-    local OLDSTTY=$(stty -g)
-    stty raw -echo min 0
-    echo -en "\033[6n" > /dev/tty && read -sdR CURPOS
-    stty $OLDSTTY
-    [[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
+	local dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+	local mainPrompt="[\[\e[32m\]\u\[\e[0m\]\s-\v\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] (\#)\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
+	local flen=${#mainPrompt}
+	local termTitle="\[\e]0;[\u@\h:\w]$\a"
+	export PS1="${termTitle}\n${mainPrompt}\n# "
+
+	# get cursor position and add new line if we're not in first column
+	exec < /dev/tty
+	local OLDSTTY=$(stty -g)
+	stty raw -echo min 0
+	echo -en "\033[6n" > /dev/tty && read -sdR CURPOS
+	stty $OLDSTTY
+	[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
 }
 PROMPT_COMMAND=prompt_command
 
