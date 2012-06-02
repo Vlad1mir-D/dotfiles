@@ -112,7 +112,7 @@ function update_PS {
 
 function prompt_command {
 	update_PS
-	if [[ $OSTYPE != "cygwin" ]]; then
+	if [[ $OSTYPE != "cygwin" && 0 -ne 0 ]]; then
 		# get cursor position and add new line if we're not in first column
 		exec < /dev/tty
 		local OLDSTTY=$(stty -g)
