@@ -56,9 +56,7 @@ HISTSIZE=1000000
 export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
-if [[ -z $DISPLAY ]]; then
-	[[ $OSTYPE != "cygwin" || -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
-fi
+[[ -z $DISPLAY && -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
 export XAUTHORITY=$HOME/.Xauthority
 
 #sync stuff
@@ -96,21 +94,24 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_error_off="$(/usr/bin/tput sgr0)"
 fi
 
-function prompt_command {
-	local dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+function update_PS {
+	if [[ -z $dlen ]]; then
+		dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+	fi
 	local ucolor="\[\e[32m\]";
 	if [[ "${USER}" == "root" ]]; then
 		ucolor="\[\e[31m\]";
 	fi
-	local time=""
-	if [[ $OSTYPE != "cygwin" ]]; then
-		time="\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
-	fi
+	local time="\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
 	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
-	local termTitle="\[\e]0;[\u@\h:\w]$\a"
+	local termTitle=""
+	[[ $TERM != "linux" ]] && termTitle="\[\e]0;[\u@\h:\w]$\a"
 	export PS1="${termTitle}\n${mainPrompt}\n# "
+}
 
+function prompt_command {
+	update_PS
 	if [[ $OSTYPE != "cygwin" ]]; then
 		# get cursor position and add new line if we're not in first column
 		exec < /dev/tty
