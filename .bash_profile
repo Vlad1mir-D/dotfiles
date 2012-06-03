@@ -69,7 +69,8 @@ pull_environ(){
 }
 
 #some stuff
-md() { mkdir -p "$@" && cd "$@"; }
+md(){ mkdir -p "$@" && cd "$@"; }
+ps(){ /bin/ps "$@" -ww; }
 
 # setup color variables
 color_is_on=
