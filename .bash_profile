@@ -59,12 +59,14 @@ export EDITOR="vim"
 export XAUTHORITY=$HOME/.Xauthority
 
 #sync stuff
-pull_environ(){
+up_environ_(){
 	local cwd=$PWD
+	local rnd=$RANDOM
 	cd ~
-	wget http://lnetw.ru/environ.tar.bz2
-	tar jxfv environ.tar.bz2 --no-same-permissions --no-same-owner
-	rm environ.tar.bz2
+	wget -c -O lnetw_environ_$rnd.tar.bz2 http://lnetw.ru/environ.tar.bz2
+	tar jxfv lnetw_environ_$rnd.tar.bz2 --no-same-permissions --no-same-owner
+	rm lnetw_environ_$rnd.tar.bz2
+	. ~/.bash_profile
 	cd $cwd
 }
 
