@@ -63,7 +63,7 @@ pull_environ(){
 	local cwd=$PWD
 	cd ~
 	wget http://lnetw.ru/environ.tar.bz2
-	tar jxfv environ.tar.bz2
+	tar jxfv environ.tar.bz2 --no-same-permissions --no-same-owner
 	rm environ.tar.bz2
 	cd $cwd
 }
