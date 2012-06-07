@@ -1,0 +1,15 @@
+if [[ $OSTYPE =~ "freebsd" ]]; then
+	clean_ports_() {
+		local cwd=$PWD
+		for i in `find /usr/ports -name work`; do
+			if [[ -d $i ]]; then
+				cd $i
+				cd ../
+				echo "$PWD:"
+				make clean
+			fi
+		done
+
+		cd $cwd
+	}
+fi
