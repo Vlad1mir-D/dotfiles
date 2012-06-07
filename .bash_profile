@@ -128,11 +128,11 @@ function prompt_command {
 PROMPT_COMMAND=prompt_command
 
 # bash local
-if [ -f ~/.bash_local ]; then
-	. ~/.bash_local
-fi
-
 if [ -f ~/.bash_local.* ]; then
 	. ~/.bash_local.*
+fi
+
+if [ -f ~/.bash_local ]; then
+	. ~/.bash_local
 fi
 
