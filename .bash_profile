@@ -40,6 +40,7 @@ alias :q="exit"
 alias ..="cd .."
 alias killa='killall -KILL'
 alias killk='kill -KILL'
+alias sudo='sudo ' #to respect all aliases
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
