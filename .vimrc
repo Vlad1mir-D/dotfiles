@@ -45,6 +45,10 @@ if has("autocmd")
   \ if line("'\"") > 0 && line ("'\"") <= line("$") |
   \   exe "normal g'\"" |
   \ endif
+
+  augroup bashalias
+    autocmd BufRead,BufNewFile .bash_local* set filetype=sh
+  augroup END
 endif
 "This is necessary to allow pasting from outside vim. It turns off auto stuff.
 "You can tell you are in paste mode when the ruler is not visible

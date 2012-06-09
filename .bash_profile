@@ -101,7 +101,7 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_error_off="$(/usr/bin/tput sgr0)"
 fi
 
-function update_PS {
+function update_PS_ {
 	if [[ -z $dlen ]]; then
 		dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
 	fi
@@ -117,8 +117,8 @@ function update_PS {
 	export PS1="${termTitle}\n${mainPrompt}\n# "
 }
 
-function prompt_command {
-	update_PS
+function prompt_command_ {
+	update_PS_
 	if [[ $OSTYPE != "cygwin" && 0 -ne 0 ]]; then
 		# get cursor position and add new line if we're not in first column
 		exec < /dev/tty
@@ -129,7 +129,7 @@ function prompt_command {
 		[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
 	fi
 }
-PROMPT_COMMAND=prompt_command
+PROMPT_COMMAND=prompt_command_
 
 # bash local
 if [ -f ~/.bash_local.* ]; then

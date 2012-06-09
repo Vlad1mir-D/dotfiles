@@ -12,4 +12,47 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 
 		cd $cwd
 	}
+
+	update_ports_() {
+		local log="/tmp/$FUNCNAME.$RANDOM"
+		while [[ -f $log ]]; do
+			log="/tmp/$FUNCNAME.$RANDOM"
+		done
+
+		echo "Getting package list..."
+		local nlist=""
+		local ulist=""
+		if [[ -z $1 ]]; then
+			nlist=$(pkg_version -v | grep "need")
+			ulist=$(echo $nlist | awk -F\  '{print $1}')
+		else
+			nlist=""
+			for var in "$@";
+			do
+				nlist="$nlist $var"
+			done
+			ulist=$nlist
+		fi
+		if [[ -n $nlist ]]; then
+			echo "Following packages will be updated with all their dependencies (portupgrade -cefrv):"
+			echo $nlist
+			echo
+
+			while true; do
+				read -p "Do you want to continue? (y/n) "
+				case $REPLY in
+					[Yy]* ) echo "Starting update process..."
+						script -k -t 0 $log portupgrade -cefrv $ulist
+						echo "Done!"
+						break;;
+					[Nn]* ) echo "As you wish :D"
+						break;;
+					* ) echo "Please answer y (yes) or n (no)"
+						echo;;
+				esac
+			done
+		else
+			echo "No packages to update!"
+		fi
+	}
 fi
