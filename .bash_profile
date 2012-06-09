@@ -55,8 +55,12 @@ HISTSIZE=1000000
 export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
-[[ -z $DISPLAY && -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
-export XAUTHORITY=$HOME/.Xauthority
+
+#X11 && X11Forwarding handling
+if [[ -z $DISPLAY ]]; then
+	[[ -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
+fi
+[[ -z $XAUTHORITY && -n $SSH_TTY ]] && export XAUTHORITY=$HOME/.Xauthority
 
 #sync stuff
 up_environ_(){
