@@ -41,6 +41,7 @@ alias ..="cd .."
 alias killa='killall -KILL'
 alias killk='kill -KILL'
 alias sudo='sudo ' #to respect all aliases
+alias tracert="sudo traceroute -I"
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
