@@ -25,7 +25,7 @@ if [[ $OSTYPE == "linux-gnu" || $OSTYPE == "cygwin" ]]; then
 	alias ls="ls --color=auto"
 	alias duh='du -h --max-depth=0'
 	alias free='free -m'
-else
+elif [[ $OSTYPE =~ "freebsd" ]]; then
 	#bsd colorize
 	export CLICOLOR=1
 	export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
@@ -69,11 +69,21 @@ fi
 up_environ_(){
 	local cwd=$PWD
 	local rnd=$RANDOM
+	local rights=""
 	cd ~
+	if [[ $OSTYPE =~ "freebsd" ]]; then
+		#type gnustat >/dev/null 2>&1
+		#[[ $? -eq 0 ]] && rights=$(gnustat -c %a ./) || echo "gnustat not found, permissions will not be saved" 1>&2
+		rights=$(stat -f '%p' ./ | rev | sed -E 's/([[:digit:]]{4}).*/\1/' | rev)
+	else
+		rights=$(stat -c '%a' ./)
+	fi
+
 	wget -c -O lnetw_environ_$rnd.tar.bz2 http://lnetw.ru/environ.tar.bz2
 	tar jxfv lnetw_environ_$rnd.tar.bz2 --no-same-permissions --no-same-owner
 	rm lnetw_environ_$rnd.tar.bz2
 	. ~/.bash_profile
+	[[ -n $rights ]] && $(chmod $rights ./)
 	cd $cwd
 }
 
