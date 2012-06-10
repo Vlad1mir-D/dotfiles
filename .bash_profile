@@ -14,6 +14,7 @@ shopt -s checkwinsize
 shopt -s cdspell
 # save all lines of a multiple-line command in the same history entry (allows easy re-editing of multi-line commands)
 shopt -s cmdhist
+shopt -s no_empty_cmd_completion
 
 #disable Ctrl+s freeze
 stty -ixon
