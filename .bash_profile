@@ -90,7 +90,9 @@ fi
 
 #sync stuff
 up_environ_(){
-	local cwd=$PWD rnd=$RANDOM rights=""
+	local cwd=$PWD rnd=$RANDOM rights="" dst=
+	local src="http://lnetw.ru/environ.tar.bz2"
+	local dst="lnetw_environ_$rnd.tar.bz2"
 
 	cd ~
 	if [[ $OSTYPE =~ "freebsd" ]]; then
@@ -99,12 +101,16 @@ up_environ_(){
 		rights=$(stat -c '%a' ./)
 	fi
 
-	wget -c -O lnetw_environ_$rnd.tar.bz2 http://lnetw.ru/environ.tar.bz2
-	tar jxfv lnetw_environ_$rnd.tar.bz2 --no-same-permissions --no-same-owner
-	rm lnetw_environ_$rnd.tar.bz2
-	. ~/.bash_profile
-	[[ -n $rights ]] && $(chmod $rights ./)
-	cd $cwd
+	wget -c -O "$dst" "$src"
+	if [ -s $dst ]; then
+		tar jxfv "$dst" --no-same-permissions --no-same-owner
+		rm "$dst"
+		. ~/.bash_profile
+		[[ -n $rights ]] && $(chmod $rights ./)
+	else
+		echo "Failed to retrieve $src" 1>&2
+	fi
+	cd "$cwd"
 }
 
 #some stuff
