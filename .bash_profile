@@ -120,14 +120,14 @@ ps(){ /bin/ps "$@" -ww; }
 check_stuff_(){
 	local -A packages managers
 	packages=(
-	[".*"]="wget bash screen dstat iostat:sysstat ifstat iftop nettop htop atop"
-	["linux"]="vim iotop strace"
-	["freebsd"]="vim:vim-lite gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop"
+	["linux"]="vim iotop strace dstat"
+	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced"
-	["apt-get:apt-get install"]=""
-	["pkg_add:pkg_add -rv"]=""
+	["apt-get:apt-get -m install"]=""
+	["pkg_add:pkg_add -rv"]="vim:vim-lite"
 	)
 	local theJob=()
 
