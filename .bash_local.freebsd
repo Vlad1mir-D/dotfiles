@@ -23,7 +23,7 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 		local nlist ulist
 		if [[ -z $1 ]]; then
 			nlist=$(pkg_version -v | grep "need")
-			ulist=$(echo $nlist | awk -F\  '{print $1}')
+			ulist=$(echo -e "$nlist" | awk -F\  '{print $1}')
 		else
 			nlist=""
 			local var
