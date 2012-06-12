@@ -230,8 +230,9 @@ function prompt_command_ {
 PROMPT_COMMAND=prompt_command_
 
 # bash local
-if [ -f ~/.bash_local.* ]; then
-	. ~/.bash_local.*
+ls -1 ~/.bash_local.* > /dev/null 2>&1
+if [ $? -eq 0  ]; then
+	for bash_local_ in ~/.bash_local.*; do . "$bash_local_"; done
 fi
 
 if [ -f ~/.bash_local ]; then
