@@ -1,6 +1,6 @@
 if [[ $OSTYPE =~ "freebsd" ]]; then
 	clean_ports_() {
-		local cwd=$PWD
+		local cwd=$PWD i
 		for i in `find /usr/ports -name work`; do
 			if [[ -d $i ]]; then
 				cd $i
@@ -20,13 +20,13 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 		done
 
 		echo "Getting package list..."
-		local nlist=""
-		local ulist=""
+		local nlist ulist
 		if [[ -z $1 ]]; then
 			nlist=$(pkg_version -v | grep "need")
 			ulist=$(echo $nlist | awk -F\  '{print $1}')
 		else
 			nlist=""
+			local var
 			for var in "$@";
 			do
 				nlist="$nlist $var"
@@ -34,23 +34,9 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 			ulist=$nlist
 		fi
 		if [[ -n $nlist ]]; then
-			echo "Following packages will be updated with all their dependencies (portupgrade -cefrv):"
-			echo $nlist
-			echo
-
-			while true; do
-				read -p "Do you want to continue? (y/n) "
-				case $REPLY in
-					[Yy]* ) echo "Starting update process..."
-						script -k -t 0 $log portupgrade -cefrv $ulist
-						echo "Done!"
-						break;;
-					[Nn]* ) echo "As you wish :D"
-						break;;
-					* ) echo "Please answer y (yes) or n (no)"
-						echo;;
-				esac
-			done
+			local cmd="script -k -t 0 $log portupgrade -cefrv $ulist"
+			ask_for_execution_ "Following packages will be updated with all their dependencies (portupgrade -cefrv):\n$nlist" "$cmd"
+			return $?
 		else
 			echo "No packages to update!"
 		fi
