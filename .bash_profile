@@ -21,7 +21,7 @@ stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
-if [[ $OSTYPE == "linux-gnu" || $OSTYPE == "cygwin" ]]; then
+if [[ $OSTYPE =~ "linux" || $OSTYPE =~ "cygwin" ]]; then
 	alias ls="ls --color=auto"
 	alias duh='du -h --max-depth=0'
 	alias free='free -m'
@@ -65,32 +65,6 @@ if [[ -z $DISPLAY ]]; then
 fi
 [[ -z $XAUTHORITY && -n $SSH_TTY ]] && export XAUTHORITY=$HOME/.Xauthority
 
-#sync stuff
-up_environ_(){
-	local cwd=$PWD
-	local rnd=$RANDOM
-	local rights=""
-	cd ~
-	if [[ $OSTYPE =~ "freebsd" ]]; then
-		#type gnustat >/dev/null 2>&1
-		#[[ $? -eq 0 ]] && rights=$(gnustat -c %a ./) || echo "gnustat not found, permissions will not be saved" 1>&2
-		rights=$(stat -f '%p' ./ | rev | sed -E 's/([[:digit:]]{4}).*/\1/' | rev)
-	else
-		rights=$(stat -c '%a' ./)
-	fi
-
-	wget -c -O lnetw_environ_$rnd.tar.bz2 http://lnetw.ru/environ.tar.bz2
-	tar jxfv lnetw_environ_$rnd.tar.bz2 --no-same-permissions --no-same-owner
-	rm lnetw_environ_$rnd.tar.bz2
-	. ~/.bash_profile
-	[[ -n $rights ]] && $(chmod $rights ./)
-	cd $cwd
-}
-
-#some stuff
-md(){ mkdir -p "$@" && cd "$@"; }
-ps(){ /bin/ps "$@" -ww; }
-
 # setup color variables
 color_is_on=
 color_red=
@@ -114,15 +88,120 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_error_off="$(/usr/bin/tput sgr0)"
 fi
 
-function update_PS_ {
-	if [[ -z $dlen ]]; then
-		dlen=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+#sync stuff
+up_environ_(){
+	local cwd=$PWD rnd=$RANDOM rights=""
+
+	cd ~
+	if [[ $OSTYPE =~ "freebsd" ]]; then
+		rights=$(stat -f '%p' ./ | rev | sed -E 's/([[:digit:]]{4}).*/\1/' | rev)
+	else
+		rights=$(stat -c '%a' ./)
 	fi
+
+	wget -c -O lnetw_environ_$rnd.tar.bz2 http://lnetw.ru/environ.tar.bz2
+	tar jxfv lnetw_environ_$rnd.tar.bz2 --no-same-permissions --no-same-owner
+	rm lnetw_environ_$rnd.tar.bz2
+	. ~/.bash_profile
+	[[ -n $rights ]] && $(chmod $rights ./)
+	cd $cwd
+}
+
+#some stuff
+md(){ mkdir -p "$@" && cd "$@"; }
+ps(){ /bin/ps "$@" -ww; }
+
+check_stuff_(){
+	local -A packages managers
+	packages=(
+	[".*"]="wget bash screen dstat iostat:sysstat ifstat iftop nettop htop atop"
+	["linux"]="vim iotop strace"
+	["freebsd"]="vim:vim-lite gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
+	)
+	managers=(
+	["yum:yum install"]="vim:vim-enhanced"
+	["apt-get:apt-get install"]=""
+	["pkg_add:pkg_add -rv"]=""
+	)
+	local theJob=()
+
+	local os package
+	for os in "${!packages[@]}"; do
+		if [[ $OSTYPE =~ $os ]]; then
+			for package in ${packages[$os]}; do
+				type ${package%:*} >/dev/null 2>&1
+				if [[ $? -gt 0 ]]; then
+					echo "package \"${package#*:}\" (#$os) not found - \"type ${package%:*}\" greater than 0"
+					theJob+=(${package#*:})
+				fi
+			done
+		fi
+	done
+
+	if [ -n "$theJob" ]; then
+		echo
+		local sys sub cmd
+		for sys in "${!managers[@]}"; do
+			type ${sys%:*} >/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				for sub in ${managers[$sys]}; do
+					theJob=(${theJob[@]/${sub%:*}/${sub#*:}})
+				done
+				cmd=${sys#*:}
+				break
+			fi
+		done
+
+		if [ -z "$cmd" ]; then
+			echo 'Package manager not found, you can install following packages manually:' 1>&2
+			echo "${theJob[@]}"
+		else
+			cmd="$cmd ${theJob[@]}"
+			ask_for_execution_ "Following command will be executed:\n$cmd" "$cmd"
+		fi
+	else
+		echo "No packages to install!"
+	fi
+}
+
+ask_for_execution_(){
+	if [[ -z "$1" || -z "$2" ]]; then
+		echo "What to execute or what to ask for?" 1>&2
+		return 1
+	fi
+
+	echo -e "$1"
+	echo
+
+	while true; do
+		read -p "Do you want to continue? (y/n) "
+		case $REPLY in
+			[Yy]* ) echo "Starting..."
+				$2
+				local retval=$?
+				[[ $retval -eq 0 ]] && echo "Done!" || echo "An error occurred while executing '$2'" 1>&2
+				return $retval
+				break;;
+			[Nn]* ) echo "Okay..."
+				break;;
+			* ) echo "Please answer y (yes) or n (no)"
+				echo;;
+		esac
+	done
+
+	return 0
+}
+
+function update_PS_ {
+	if [[ -z $dlen_ ]]; then
+		dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+	fi
+
 	local ucolor="\[\e[32m\]";
 	if [[ "${USER}" == "root" ]]; then
 		ucolor="\[\e[31m\]";
 	fi
-	local time="\[\e[$(($COLUMNS-$dlen))G\](\D{%a, %d.%m.%y %T %z})"
+	local time="\[\e[$(($COLUMNS-$dlen_))G\](\D{%a, %d.%m.%y %T %z})"
 	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
