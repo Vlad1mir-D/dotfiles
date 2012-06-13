@@ -203,12 +203,14 @@ function update_PS_ {
 		dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
 	fi
 
-	local ucolor="\[\e[32m\]";
+	local ucolor="\[\e[32m\]"
 	if [[ "${USER}" == "root" ]]; then
-		ucolor="\[\e[31m\]";
+		ucolor="\[\e[31m\]"
 	fi
+	local hcolor="\[\e[32m\]"
+	[[ -n $SSH_TTY ]] && hcolor="\[\e[36m\]"
 	local time="\[\e[$(($COLUMNS-$dlen_))G\](\D{%a, %d.%m.%y %T %z})"
-	local mainPrompt="[${ucolor}\u\[\e[32m\]@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ $TERM != "linux" ]] && termTitle="\[\e]0;[\u@\h:\w]$\a"
