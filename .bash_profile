@@ -91,7 +91,7 @@ fi
 #sync stuff
 up_environ_(){
 	local cwd=$PWD rnd=$RANDOM rights="" dst=
-	local src="https://lnetw.ru/environ.tar.bz2"
+	local src="https://www.lnetw.ru/environ.tar.bz2"
 	local dst="lnetw_environ_$rnd.tar.bz2"
 
 	cd ~
