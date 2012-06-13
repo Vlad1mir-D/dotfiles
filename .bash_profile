@@ -115,7 +115,7 @@ up_environ_(){
 
 #some stuff
 md(){ mkdir -p "$@" && cd "$@"; }
-ps(){ /bin/ps "$@" -ww; }
+[[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
 check_stuff_(){
 	local -A packages managers
