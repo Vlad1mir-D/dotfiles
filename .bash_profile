@@ -104,12 +104,13 @@ up_environ_(){
 	wget -c -O "$dst" "$src"
 	if [ -s $dst ]; then
 		tar jxfv "$dst" --no-same-permissions --no-same-owner
-		rm "$dst"
 		. ~/.bash_profile
 		[[ -n $rights ]] && $(chmod $rights ./)
 	else
 		echo "Failed to retrieve $src" 1>&2
 	fi
+
+	[ -f "$dst" ] && rm "$dst"
 	cd "$cwd"
 }
 
