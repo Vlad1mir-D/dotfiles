@@ -1,0 +1,80 @@
+check_stuff_(){
+	local -A packages managers
+	packages=(
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop"
+	["linux"]="vim iotop strace dstat"
+	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
+	)
+	managers=(
+	["yum:yum install"]="vim:vim-enhanced"
+	["apt-get:apt-get -m install"]=""
+	["pkg_add:pkg_add -rv"]="vim:vim-lite"
+	)
+	local theJob=()
+
+	local os package
+	for os in "${!packages[@]}"; do
+		if [[ $OSTYPE =~ $os ]]; then
+			for package in ${packages[$os]}; do
+				type ${package%:*} >/dev/null 2>&1
+				if [[ $? -gt 0 ]]; then
+					echo "package \"${package#*:}\" (#$os) not found - \"type ${package%:*}\" greater than 0"
+					theJob+=(${package#*:})
+				fi
+			done
+		fi
+	done
+
+	if [ -n "$theJob" ]; then
+		echo
+		local sys sub cmd
+		for sys in "${!managers[@]}"; do
+			type ${sys%:*} >/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				for sub in ${managers[$sys]}; do
+					theJob=(${theJob[@]/${sub%:*}/${sub#*:}})
+				done
+				cmd=${sys#*:}
+				break
+			fi
+		done
+
+		if [ -z "$cmd" ]; then
+			echo 'Package manager not found, you can install following packages manually:' 1>&2
+			echo "${theJob[@]}"
+		else
+			cmd="$cmd ${theJob[@]}"
+			ask_for_execution_ "Following command will be executed:\n$cmd" "$cmd"
+		fi
+	else
+		echo "No packages to install!"
+	fi
+}
+
+ask_for_execution_(){
+	if [[ -z "$1" || -z "$2" ]]; then
+		echo "What to execute or what to ask for?" 1>&2
+		return 1
+	fi
+
+	echo -e "$1"
+	echo
+
+	while true; do
+		read -p "Do you want to continue? (y/n) "
+		case $REPLY in
+			[Yy]* ) echo "Starting..."
+				$2
+				local retval=$?
+				[[ $retval -eq 0 ]] && echo "Done!" || echo "An error occurred while executing '$2'" 1>&2
+				return $retval
+				break;;
+			[Nn]* ) echo "Okay..."
+				break;;
+			* ) echo "Please answer y (yes) or n (no)"
+				echo;;
+		esac
+	done
+
+	return 0
+}
