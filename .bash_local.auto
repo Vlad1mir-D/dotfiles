@@ -2,12 +2,12 @@ check_stuff_(){
 	local -A packages managers
 	packages=(
 	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop"
-	["linux"]="vim iotop strace dstat"
+	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced"
-	["apt-get:apt-get -m install"]=""
+	["apt-get:apt-get -m install"]="nettop:"
 	["pkg_add:pkg_add -rv"]="vim:vim-lite"
 	)
 	local theJob=()
