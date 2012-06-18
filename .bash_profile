@@ -77,13 +77,13 @@ color_bg_red=
 color_off=
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_is_on=true
-	color_red="\[$(/usr/bin/tput setaf 1)\]"
-	color_green="\[$(/usr/bin/tput setaf 2)\]"
-	color_yellow="\[$(/usr/bin/tput setaf 3)\]"
-	color_blue="\[$(/usr/bin/tput setaf 6)\]"
-	color_white="\[$(/usr/bin/tput setaf 7)\]"
-	color_gray="\[$(/usr/bin/tput setaf 8)\]"
-	color_off="\[$(/usr/bin/tput sgr0)\]"
+	color_red="$(/usr/bin/tput setaf 1)"
+	color_green="$(/usr/bin/tput setaf 2)"
+	color_yellow="$(/usr/bin/tput setaf 3)"
+	color_blue="$(/usr/bin/tput setaf 6)"
+	color_white="$(/usr/bin/tput setaf 7)"
+	color_gray="$(/usr/bin/tput setaf 8)"
+	color_off="$(/usr/bin/tput sgr0)"
 	color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
 	color_error_off="$(/usr/bin/tput sgr0)"
 fi
@@ -123,14 +123,14 @@ function update_PS_ {
 		dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
 	fi
 
-	local ucolor="\[\e[32m\]"
+	local ucolor="\e[32m"
 	if [[ "${USER}" == "root" ]]; then
-		ucolor="\[\e[31m\]"
+		ucolor="\e[31m"
 	fi
-	local hcolor="\[\e[32m\]"
-	[[ -n $SSH_TTY && -z $is_local_ ]] && hcolor="\[\e[36m\]"
-	local time="\[\e[$(($COLUMNS-$dlen_))G\](\D{%a, %d.%m.%y %T %z})"
-	local mainPrompt="[${ucolor}\u${hcolor}@\h:\[\e[33m\]\w\[\e[0m\]] ($(($SHLVL-1)):\#)$time"
+	local hcolor="\e[32m"
+	[[ -n $SSH_TTY && -z $is_local_ ]] && hcolor="\e[36m"
+	local time="\e[$(($COLUMNS-$dlen_))G(\D{%a, %d.%m.%y %T %z})"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ $TERM != "linux" ]] && termTitle="\[\e]0;[\u@\h:\w]$\a"
