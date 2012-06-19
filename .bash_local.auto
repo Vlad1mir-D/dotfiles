@@ -2,12 +2,12 @@ check_stuff_(){
 	local -A packages managers
 	packages=(
 	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop"
-	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils"
+	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils iptraf iptraf-ng"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced"
-	["apt-get:apt-get -m install"]="nettop:"
+	["apt-get:apt-get -m install"]="nettop: iptraf-ng:"
 	["pkg_add:pkg_add -rv"]="vim:vim-lite"
 	)
 	local theJob=()
@@ -43,6 +43,10 @@ check_stuff_(){
 			echo 'Package manager not found, you can install following packages manually:' 1>&2
 			echo "${theJob[@]}"
 		else
+			if [[ -z ${theJob[@]} ]]; then
+				echo "None of non-installed packages was available on your system!"
+				return 1
+			fi
 			cmd="$cmd ${theJob[@]}"
 			ask_for_execution_ "Following command will be executed:\n$cmd" "$cmd"
 		fi

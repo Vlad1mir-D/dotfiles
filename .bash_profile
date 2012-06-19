@@ -37,8 +37,8 @@ fi
 alias ll='ls -liahs'
 alias rmrf='rm -rf'
 alias cls="clear"
-alias :q="exit"
-alias ..="cd .."
+#alias :q="exit"
+#alias ..="cd .."
 alias killa='killall -KILL'
 alias killk='kill -KILL'
 alias sudo='sudo ' #to respect all aliases
@@ -130,7 +130,7 @@ function update_PS_ {
 	local hcolor="\e[32m"
 	[[ -n $SSH_TTY && -z $is_local_ ]] && hcolor="\e[36m"
 	local time="\e[$(($COLUMNS-$dlen_))G(\D{%a, %d.%m.%y %T %z})"
-	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m ($(($SHLVL-1)):\#)$time"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ $TERM != "linux" ]] && termTitle="\[\e]0;[\u@\h:\w]$\a"
