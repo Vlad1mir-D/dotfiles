@@ -1,2 +1,3 @@
 defflow off
 vbell off
+defscrollback 50000
