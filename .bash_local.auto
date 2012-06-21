@@ -8,7 +8,7 @@ check_stuff_(){
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced"
 	["apt-get:apt-get -m install"]="nettop: iptraf-ng:"
-	["pkg_add:pkg_add -rv"]="vim:vim-lite"
+	["portinstall:portinstall -cefrv"]="vim:vim-lite"
 	)
 	local theJob=()
 
