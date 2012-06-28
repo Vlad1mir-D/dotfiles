@@ -45,10 +45,6 @@ if has("autocmd")
   \ if line("'\"") > 0 && line ("'\"") <= line("$") |
   \   exe "normal g'\"" |
   \ endif
-
-  augroup bashalias
-    autocmd BufRead,BufNewFile .bash_local* set filetype=sh
-  augroup END
 endif
 "This is necessary to allow pasting from outside vim. It turns off auto stuff.
 "You can tell you are in paste mode when the ruler is not visible
@@ -206,6 +202,9 @@ au BufNewFile,BufReadPre *.gpg :set secure viminfo= noswapfile nobackup nowriteb
 au BufReadPost *.gpg :%!gpg -d 2>/dev/null
 au BufWritePre *.gpg :%!gpg -e -r 'P@draigBrady.com' 2>/dev/null
 au BufWritePost *.gpg u
+"
+au BufRead,BufNewFile .bash_local* :set ft=sh
+au BufRead,BufNewFile *nginx/*conf :set ft=nginx
 
 filetype on
 filetype plugin on
