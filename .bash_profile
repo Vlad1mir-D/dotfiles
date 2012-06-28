@@ -90,6 +90,11 @@ fi
 
 #sync stuff
 up_environ_(){
+	if [[ $forbid_environ_up_ -gt 0 ]]; then
+		echo "Environment update forbidden!" >&2
+		return 1
+	fi
+
 	local cwd=$PWD rnd=$RANDOM rights="" dst=
 	local src="https://www.lnetw.ru/environ.tar.bz2"
 	local dst="lnetw_environ_$rnd.tar.bz2"
