@@ -204,7 +204,7 @@ au BufWritePre *.gpg :%!gpg -e -r 'P@draigBrady.com' 2>/dev/null
 au BufWritePost *.gpg u
 "
 au BufRead,BufNewFile .bash_local* :set ft=sh
-au BufRead,BufNewFile *nginx/*conf :set ft=nginx
+au BufRead,BufNewFile */etc/nginx/* :set ft=nginx
 
 filetype on
 filetype plugin on
