@@ -138,7 +138,7 @@ function update_PS_ {
 	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m] ($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
-	[[ $TERM != "linux" ]] && termTitle="\[\e]0;[\u@\h:\w]$\a"
+	[[ $TERM != "linux" ]] && [[ $TERM =~ "cons" ]] || termTitle="\[\e]0;[\u@\h:\w] $\a"
 	export PS1="${termTitle}\n${mainPrompt}\n# "
 }
 
