@@ -19,7 +19,7 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 			log="/tmp/$FUNCNAME.$RANDOM"
 		done
 
-		echo "Getting package list..."
+		echo "Fetching installed ports list..."
 		local nlist ulist
 		if [[ -z $1 ]]; then
 			nlist=$(pkg_version -v | grep "need")
@@ -35,10 +35,10 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 		fi
 		if [[ -n $nlist ]]; then
 			local cmd="script -k -t 0 $log portupgrade -m DISABLE_VULNERABILITIES=yes -cefrv $ulist"
-			ask_for_execution_ "Following packages will be updated with all their dependencies (portupgrade -cefrv):\n$nlist" "$cmd"
+			ask_for_execution_ "Following ports will be updated with all their dependencies (portupgrade -cefrv):\n$nlist" "$cmd"
 			return $?
 		else
-			echo "No packages to update!"
+			echo "No ports to update!"
 		fi
 	}
 fi

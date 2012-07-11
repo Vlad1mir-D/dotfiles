@@ -41,8 +41,14 @@ alias cls="clear"
 #alias ..="cd .."
 alias killa='killall -KILL'
 alias killk='kill -KILL'
+
 alias sudo='sudo ' #to respect all aliases
 alias tracert="sudo traceroute -I"
+
+type iptraf >/dev/null 2>&1
+[[ $? -eq 0 ]] && alias iptraf="TERM=linux iptraf"
+type iptraf-ng >/dev/null 2>&1
+[[ $? -eq 0 ]] && alias iptraf-ng="TERM=linux iptraf-ng"
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
@@ -123,7 +129,7 @@ up_environ_(){
 md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
-function update_PS_ {
+function refresh_PS_ {
 	if [[ -z $dlen_ ]]; then
 		dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
 	fi
@@ -143,7 +149,7 @@ function update_PS_ {
 }
 
 function prompt_command_ {
-	update_PS_
+	refresh_PS_
 	if [[ $OSTYPE != "cygwin" && 0 -ne 0 ]]; then
 		# get cursor position and add new line if we're not in first column
 		exec < /dev/tty
