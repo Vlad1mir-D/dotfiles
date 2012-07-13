@@ -34,7 +34,7 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 			ulist=$nlist
 		fi
 		if [[ -n $nlist ]]; then
-			local cmd="script -k -t 0 $log portupgrade -m DISABLE_VULNERABILITIES=yes -cefrv $ulist"
+			local cmd="script -k -t 0 $log portupgrade -cefrv $ulist"
 			ask_for_execution_ "Following ports will be updated with all their dependencies (portupgrade -cefrv):\n$nlist" "$cmd"
 			return $?
 		else
