@@ -1,4 +1,13 @@
 if [[ $OSTYPE =~ "freebsd" ]]; then
+	type ccache >/dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		export PATH=/usr/local/libexec/ccache:$PATH
+		export CCACHE_PATH=/usr/bin:/usr/local/bin
+		export CCACHE_DIR=/var/db/ccache
+		export CCACHE_LOGFILE=/var/log/ccache.log
+		ccache -M 10G > /dev/null
+	fi
+
 	clean_ports_() {
 		local cwd=$PWD i
 		for i in `find /usr/ports -name work`; do

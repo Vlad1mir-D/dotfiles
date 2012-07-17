@@ -2,12 +2,12 @@ check_stuff_(){
 	local -A packages managers
 	packages=(
 	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop"
-	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils iptraf iptraf-ng"
-	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup"
+	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils iptraf iptraf-ng yumdownloader:yum-utils"
+	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup ccache"
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced"
-	["apt-get:apt-get -m install"]="nettop: iptraf-ng:"
+	["apt-get:apt-get -m install"]="nettop: iptraf-ng: yum-utils:"
 	["portinstall:portinstall -cefrv"]="vim:vim-lite"
 	)
 	local theJob=()
@@ -49,6 +49,7 @@ check_stuff_(){
 			fi
 			cmd="$cmd ${theJob[@]}"
 			ask_for_execution_ "Following command will be executed:\n$cmd" "$cmd"
+			. ~/.bashrc
 		fi
 	else
 		echo "No packages to install!"
