@@ -44,6 +44,7 @@ alias killk='kill -KILL'
 
 alias sudo='sudo ' #to respect all aliases
 alias tracert="sudo traceroute -I"
+alias tracert6="sudo traceroute6 -I"
 
 type iptraf >/dev/null 2>&1
 [[ $? -eq 0 ]] && alias iptraf="TERM=linux iptraf"
