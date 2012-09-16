@@ -25,6 +25,9 @@ if [[ $OSTYPE =~ "linux" || $OSTYPE =~ "cygwin" ]]; then
 	alias ls="ls --color=auto"
 	alias duh='du -h --max-depth=0'
 	alias free='free -m'
+
+	alias tracert="sudo traceroute -I"
+	alias tracert6="sudo traceroute6 -I"
 elif [[ $OSTYPE =~ "freebsd" ]]; then
 	#bsd colorize
 	export CLICOLOR=1
@@ -32,6 +35,9 @@ elif [[ $OSTYPE =~ "freebsd" ]]; then
 
 	alias duh='du -h -d 0'
 	alias llw='ls -liahW'
+
+	alias tracert="traceroute -I"
+	alias tracert6="traceroute6 -I"
 fi
 
 alias ll='ls -liahs'
@@ -43,8 +49,6 @@ alias killa='killall -KILL'
 alias killk='kill -KILL'
 
 alias sudo='sudo ' #to respect all aliases
-alias tracert="sudo traceroute -I"
-alias tracert6="sudo traceroute6 -I"
 
 type iptraf >/dev/null 2>&1
 [[ $? -eq 0 ]] && alias iptraf="TERM=linux iptraf"
