@@ -167,6 +167,10 @@ function prompt_command_ {
 }
 PROMPT_COMMAND=prompt_command_
 
+if [ "$PS1" ]; then
+	complete -cf sudo
+fi
+
 # bash local
 ls -1 ~/.bash_local.* > /dev/null 2>&1
 if [ $? -eq 0  ]; then
