@@ -131,7 +131,7 @@ up_environ_(){
 }
 
 #some stuff
-md(){ mkdir -p "$@" && cd "$@"; }
+function md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
 function refresh_PS_ {
