@@ -203,8 +203,10 @@ au BufReadPost *.gpg :%!gpg -d 2>/dev/null
 au BufWritePre *.gpg :%!gpg -e -r 'P@draigBrady.com' 2>/dev/null
 au BufWritePost *.gpg u
 "
+"local syntax
 au BufRead,BufNewFile .bash_local* :set ft=sh
 au BufRead,BufNewFile */etc/nginx/* :set ft=nginx
+au BufRead,BufNewFile */etc/named.conf* :set ft=named
 
 filetype on
 filetype plugin on
