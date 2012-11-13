@@ -1,3 +1,6 @@
+[[ $ENVIRON_EXECUTED_ == "1" ]] && return
+export ENVIRON_EXECUTED_="1"
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -99,37 +102,6 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	color_error_off="$(/usr/bin/tput sgr0)"
 fi
 
-#sync stuff
-up_environ_(){
-	if [[ $forbid_environ_up_ -gt 0 ]]; then
-		echo "Environment update forbidden!" >&2
-		return 1
-	fi
-
-	local cwd=$PWD rnd=$RANDOM rights="" dst=
-	local src="https://www.lnetw.ru/environ.tar.bz2"
-	local dst="lnetw_environ_$rnd.tar.bz2"
-
-	cd ~
-	if [[ $OSTYPE =~ "freebsd" ]]; then
-		rights=$(stat -f '%p' ./ | rev | sed -E 's/([[:digit:]]{4}).*/\1/' | rev)
-	else
-		rights=$(stat -c '%a' ./)
-	fi
-
-	wget -c -O "$dst" "$src"
-	if [ -s $dst ]; then
-		tar jxfv "$dst" --no-same-permissions --no-same-owner
-		. ~/.bash_profile
-		[[ -n $rights ]] && $(chmod $rights ./)
-	else
-		echo "Failed to retrieve $src" 1>&2
-	fi
-
-	[ -f "$dst" ] && rm "$dst"
-	cd "$cwd"
-}
-
 #some stuff
 function md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
@@ -180,4 +152,6 @@ fi
 if [ -f ~/.bash_local ]; then
 	. ~/.bash_local
 fi
+
+ENVIRON_EXECUTED_=0
 
