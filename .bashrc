@@ -1,1 +1,1 @@
-.bash_profile
+.bash_local.lsig

@@ -50,11 +50,11 @@ check_environ_
 "
 	rm $tmp 2>/dev/null
 	mkdir $build
-	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.lsig | xargs cp -a --target-directory=$build/
+	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.environ_ctrl | xargs cp -a --target-directory=$build/
 	chmod 700 $build
 	chmod -st $build
 	cd $build
-	echo "$check_environ_" >> .bashrc
+	echo "$check_environ_" >> .bash_local.lsig
 	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
 	cd ..
 	scp -v $tmp $dst
