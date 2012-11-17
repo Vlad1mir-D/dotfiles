@@ -1,0 +1,69 @@
+lsig_path="/home/lsig"
+lsig_env_vers="$(hg tip -R $lsig_path | grep changeset)"
+
+explore_environ_(){
+	local cwd=$PWD
+	cd $lsig_path
+	export lsig_filelist=$(find ./ -maxdepth 1 \! -name \.hg\* \! -name \.)
+	cd $cwd
+	return 0
+}
+
+push_environ_(){
+	local curr="$(type $FUNCNAME;check_environ_)"
+	echo "############################################"
+	check_environ_
+	echo "############################################"
+	. ~/.bash_profile
+	if [[ "$curr" != "$(type $FUNCNAME;check_environ_)" ]]; then
+		push_environ_
+		return
+	fi
+	echo "pushing now...
+"
+	local cwd=$PWD
+	local build="BUILDROOT"
+	local dst="ds:/home/amigo/data/www/lnetw.ru/"
+	local tmp="environ.tar.bz2"
+
+	local sh_src="/tmp/lnetw_environ_$RANDOM.sh"
+	local sh_tmp="environ.sh"
+	local up_function_name="up_environ_"
+	local up_function_cnt="#!/bin/sh
+$(type $up_function_name | tail -n +2)
+$up_function_name"
+	echo "$up_function_cnt" > $sh_src
+	scp -v $sh_src $dst$sh_tmp
+	rm $sh_src
+
+	cd $lsig_path
+	explore_environ_
+	local check_environ_="
+#added by push_environ_
+lsig_filelist=\"$lsig_filelist\"
+check_environ_(){
+	echo \"current environ $(hg tip | grep changeset)\"
+	[[ -f ~/.bash_local.environ ]] && echo \"sync stuff present\" || echo \"sync stuff not present\"
+}
+echo
+check_environ_
+"
+	rm $tmp 2>/dev/null
+	mkdir $build
+	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.lsig | xargs cp -a --target-directory=$build/
+	chmod 700 $build
+	chmod -st $build
+	cd $build
+	echo "$check_environ_" >> .bashrc
+	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
+	cd ..
+	scp -v $tmp $dst
+	rm -rf $tmp $build/
+	cd $cwd
+	return 0
+}
+
+check_environ_(){
+	echo "current environ $lsig_env_vers"
+	return 0
+}
