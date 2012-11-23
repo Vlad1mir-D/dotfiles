@@ -137,6 +137,21 @@ function prompt_command_ {
 }
 PROMPT_COMMAND=prompt_command_
 
+#lsig environ stuff
+function add_lsig_to_ {
+	if [[ -z $1 ]]; then
+		echo "$FUNCNAME requires filename not to be null" 1>&2
+		return 1
+	fi
+
+	grep 'Lsig_Check0' "$1" >/dev/null 2>&1
+	[ $? -eq 0 ] && return 0
+
+	touch "$1"
+	[ $? -eq 0 ] && echo ". ~/.bash_local.lsig #Lsig_Check0" >> "$1"
+	return $?
+}
+
 if [ "$PS1" ]; then
 	complete -cf sudo
 fi

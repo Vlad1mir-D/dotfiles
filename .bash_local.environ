@@ -19,13 +19,22 @@ up_environ_(){
 	wget -c -O "$dst" "$src"
 	if [ -s $dst ]; then
 		tar jxfv "$dst" --no-same-permissions --no-same-owner
-		. ~/.bash_profile
+		. ~/.bash_local.lsig
 		[[ -n $rights ]] && $(chmod $rights ./)
 	else
 		echo "Failed to retrieve $src" 1>&2
 	fi
 
 	[[ "$1" == "1" ]] && rm .bash_local.environ
+
+	#update to full local-safe environment
+	local statement='BEGIN{FS="\n";RS="";ff=0}/some stuff/{ff+=1}/n refresh_PS_/{ff+=1}/ExGxFxdxCxDxDxhbadExEx/{ff+=1}END{if(ff==3){exit 0}{exit 1}}'
+	awk "$statement" ~/.bashrc > /dev/null 2>&1
+	[ $? -eq 0 ] && rm ~/.bashrc
+	awk "$statement" ~/.bash_profile > /dev/null 2>&1
+	[ $? -eq 0 ] && rm ~/.bash_profile
+	add_lsig_to_ ~/.bashrc
+	add_lsig_to_ ~/.bash_profile
 
 	[ -f "$dst" ] && rm "$dst"
 	cd "$cwd"
@@ -38,10 +47,11 @@ deploy_environ_(){
 	echo "############################################"
 	echo "deploying now to $1...
 "
+	local rnd=$RANDOM
 	local cwd=$PWD
-	local build="BUILDROOT_$RANDOM"
+	local build="BUILDROOT_$rnd"
 	local dst="$1"
-	local tmp="lnetw_environ_$RANDOM.tar.bz2"
+	local tmp="lnetw_environ_$rnd.tar.bz2"
 
 	cd ~/
 	rm $tmp 2>/dev/null
