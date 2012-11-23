@@ -1,6 +1,3 @@
-[[ $ENVIRON_EXECUTED_ == "1" ]] && return
-export ENVIRON_EXECUTED_="1"
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -31,6 +28,7 @@ if [[ $OSTYPE =~ "linux" || $OSTYPE =~ "cygwin" ]]; then
 
 	alias tracert="sudo traceroute -I"
 	alias tracert6="sudo traceroute6 -I"
+	alias scan_scsi_="echo \"- - -\" > /sys/class/scsi_host/host0/scan"
 elif [[ $OSTYPE =~ "freebsd" ]]; then
 	#bsd colorize
 	export CLICOLOR=1
@@ -144,14 +142,12 @@ if [ "$PS1" ]; then
 fi
 
 # bash local
-ls -1 ~/.bash_local.* > /dev/null 2>&1
+ls -1 ~/.bash_local.[^\(lsig\)]* > /dev/null 2>&1
 if [ $? -eq 0  ]; then
-	for bash_local_ in ~/.bash_local.*; do . "$bash_local_"; done
+	for bash_local_ in ~/.bash_local.[^\(lsig\)]*; do . "$bash_local_"; done
 fi
 
 if [ -f ~/.bash_local ]; then
 	. ~/.bash_local
 fi
-
-ENVIRON_EXECUTED_=0
 
