@@ -54,7 +54,14 @@ deploy_environ_(){
 	chmod 700 $build
 	chmod -st $build
 	cd $build
-	[[ "$2" == "1" ]] && rm .bash_local.lsig.environ
+	[[ "$2" == "1" ]] && echo "
+function up_environ_(){
+	. ~/.bash_local.lsig
+	check_environ_in_ .bash_profile
+	check_environ_in_ .bashrc
+}
+$(type check_environ_in_ | tail -n +2)
+" > .bash_local.lsig.environ
 	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
 	cd ..
 	scp -v $tmp $dst
