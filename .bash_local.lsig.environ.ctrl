@@ -46,7 +46,8 @@ lsig_env_ver_=\"$(hg tip | grep changeset)\"
 lsig_env_ver_d_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2}')\"
 check_environ_(){
 	echo \"current environ \$lsig_env_ver_\"
-	[[ -f ~/.bash_local.lsig.environ ]] && echo \"sync stuff present\" || echo \"sync stuff not present\"
+	grep '#sync stuff' ~/.bash_local.lsig.environ >/dev/null 2>&1
+	[[ \$? -eq 0 ]] && echo \"sync stuff present\" || echo \"sync stuff not present\"
 	return 0
 }
 echo
