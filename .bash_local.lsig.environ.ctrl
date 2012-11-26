@@ -1,10 +1,11 @@
-lsig_path="/home/lsig"
-lsig_env_vers="$(hg tip -R $lsig_path | grep changeset)"
+lsig_path_="/home/lsig"
+lsig_env_ver_="$(hg tip -R $lsig_path_ | grep changeset)"
+lsig_env_ver_d_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2}')"
 
 explore_environ_(){
 	local cwd=$PWD
-	cd $lsig_path
-	export lsig_filelist=$(find ./ -maxdepth 1 \! -name \.hg\* \! -name \.)
+	cd $lsig_path_
+	export lsig_filelist_=$(find ./ -maxdepth 1 \! -name \.hg\* \! -name \.)
 	cd $cwd
 	return 0
 }
@@ -14,7 +15,7 @@ push_environ_(){
 	echo "############################################"
 	check_environ_
 	echo "############################################"
-	. ~/.bash_profile
+	. ~/.bash_local.lsig
 	if [[ "$curr" != "$(type $FUNCNAME;check_environ_)" ]]; then
 		push_environ_
 		return
@@ -36,21 +37,24 @@ $up_function_name"
 	scp -v $sh_src $dst$sh_tmp
 	rm $sh_src
 
-	cd $lsig_path
+	cd $lsig_path_
 	explore_environ_
 	local check_environ_="
 #added by push_environ_
-lsig_filelist=\"$lsig_filelist\"
+lsig_filelist_=\"$lsig_filelist_\"
+lsig_env_ver_=\"$(hg tip | grep changeset)\"
+lsig_env_ver_d_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2}')\"
 check_environ_(){
-	echo \"current environ $(hg tip | grep changeset)\"
-	[[ -f ~/.bash_local.environ ]] && echo \"sync stuff present\" || echo \"sync stuff not present\"
+	echo \"current environ \$lsig_env_ver_\"
+	[[ -f ~/.bash_local.lsig.environ ]] && echo \"sync stuff present\" || echo \"sync stuff not present\"
+	return 0
 }
 echo
 check_environ_
 "
 	rm $tmp 2>/dev/null
 	mkdir $build
-	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.environ_ctrl | xargs cp -a --target-directory=$build/
+	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.lsig.environ.ctrl | xargs cp -a --target-directory=$build/
 	chmod 700 $build
 	chmod -st $build
 	cd $build
@@ -64,6 +68,6 @@ check_environ_
 }
 
 check_environ_(){
-	echo "current environ $lsig_env_vers"
+	echo "current environ $lsig_env_ver_"
 	return 0
 }

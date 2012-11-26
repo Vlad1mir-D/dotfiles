@@ -25,23 +25,17 @@ up_environ_(){
 		echo "Failed to retrieve $src" 1>&2
 	fi
 
-	[[ "$1" == "1" ]] && rm .bash_local.environ
+	[[ "$1" == "1" ]] && rm .bash_local.lsig.environ
 
-	#update to full local-safe environment
-	local statement='BEGIN{FS="\n";RS="";ff=0}/some stuff/{ff+=1}/n refresh_PS_/{ff+=1}/ExGxFxdxCxDxDxhbadExEx/{ff+=1}END{if(ff==3){exit 0}{exit 1}}'
-	awk "$statement" ~/.bashrc > /dev/null 2>&1
-	[ $? -eq 0 ] && rm ~/.bashrc
-	awk "$statement" ~/.bash_profile > /dev/null 2>&1
-	[ $? -eq 0 ] && rm ~/.bash_profile
-	add_lsig_to_ ~/.bashrc
-	add_lsig_to_ ~/.bash_profile
+	check_environ_in_ .bash_profile
+	check_environ_in_ .bashrc
 
 	[ -f "$dst" ] && rm "$dst"
 	cd "$cwd"
 }
 
 deploy_environ_(){
-	. ~/.bash_profile
+	. ~/.bash_local.lsig
 	echo "############################################"
 	check_environ_
 	echo "############################################"
@@ -56,15 +50,29 @@ deploy_environ_(){
 	cd ~/
 	rm $tmp 2>/dev/null
 	mkdir $build
-	echo "$lsig_filelist" | xargs cp -a --target-directory=$build/
+	echo "$lsig_filelist_" | xargs cp -a --target-directory=$build/
 	chmod 700 $build
 	chmod -st $build
 	cd $build
-	[[ "$2" == "1" ]] && rm .bash_local.environ
+	[[ "$2" == "1" ]] && rm .bash_local.lsig.environ
 	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
 	cd ..
 	scp -v $tmp $dst
 	rm -rf $tmp $build/
 	cd $cwd
+}
+
+function check_environ_in_ {
+	if [[ -z $1 ]]; then
+		echo "$FUNCNAME requires filename not to be null" 1>&2
+		return 1
+	fi
+
+	grep 'Lsig_Check0' "$1" >/dev/null 2>&1
+	[ $? -eq 0 ] && return 0
+
+	touch "$1"
+	[ $? -eq 0 ] && echo ". ~/.bash_local.lsig #Lsig_Check0" >> "$1"
+	return $?
 }
 
