@@ -49,7 +49,7 @@ check_stuff_(){
 			fi
 			cmd="$cmd ${theJob[@]}"
 			ask_for_execution_ "Following command will be executed:\n$cmd" "$cmd"
-			. ~/.bash_profile
+			. ~/.bash_local.lsig
 		fi
 	else
 		echo "No packages to install!"
