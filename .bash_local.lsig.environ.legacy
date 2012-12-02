@@ -1,7 +1,7 @@
 #for teh legacy!
 function check_legacy_in_ {
 	if [[ -z "$1" || -z "$2" ]]; then
-		echo "$FUNCNAME requires filename and statement not to be null a:$1 f:$2" 1>&2
+		echo "$FUNCNAME requires filename and statement not to be null" 1>&2
 		return 1
 	fi
 

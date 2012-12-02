@@ -1,3 +1,5 @@
+#.bash_local excerpt
+
 lsig_path_="/home/lsig"
 lsig_env_ver_="$(hg tip -R $lsig_path_ | grep changeset)"
 lsig_env_ver_d_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2}')"
@@ -5,7 +7,7 @@ lsig_env_ver_d_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2}')"
 explore_environ_(){
 	local cwd=$PWD
 	cd $lsig_path_
-	export lsig_filelist_=$(find ./ -maxdepth 1 \! -name \.hg\* \! -name \.)
+	export lsig_filelist_="$(find ./ -maxdepth 1 \! -path \*.hg\* \! -name \. \! -name \.bash_local.lsig.environ.ctrl)"
 	cd $cwd
 	return 0
 }
@@ -72,3 +74,16 @@ check_environ_(){
 	echo "current environ $lsig_env_ver_"
 	return 0
 }
+
+up_environ_(){
+	local opwd="$PWD"
+
+	cd "$lsig_path_"
+
+	for i in `find -type f \! -path \*.hg\*`; do rm "/home/AmiGO/$i"; ln "$i" "/home/AmiGO/$i"; done
+
+	. ~/.bash_local.lsig
+	cd "$opwd"
+}
+
+explore_environ_
