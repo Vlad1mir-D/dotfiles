@@ -41,11 +41,10 @@ deploy_environ_(){
 	echo "############################################"
 	echo "deploying now to $1...
 "
-	local rnd=$RANDOM
 	local cwd=$PWD
-	local build="BUILDROOT_$rnd"
+	local build="BUILDROOT_$RANDOM"
 	local dst="$1"
-	local tmp="lnetw_environ_$rnd.tar.bz2"
+	local tmp="lnetw_environ_$lsig_env_ver_s_.tar.bz2"
 
 	cd ~/
 	rm $tmp 2>/dev/null
