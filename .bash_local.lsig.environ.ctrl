@@ -3,6 +3,7 @@
 lsig_path_="/home/lsig"
 lsig_env_ver_="$(hg tip -R $lsig_path_ | grep changeset)"
 lsig_env_ver_d_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2}')"
+lsig_env_ver_s_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2"-"$3}')"
 
 explore_environ_(){
 	local cwd=$PWD
@@ -46,6 +47,7 @@ $up_function_name"
 lsig_filelist_=\"$lsig_filelist_\"
 lsig_env_ver_=\"$(hg tip | grep changeset)\"
 lsig_env_ver_d_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2}')\"
+lsig_env_ver_s_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2\"-\"\$3}')\"
 check_environ_(){
 	echo \"current environ \$lsig_env_ver_\"
 	grep '#sync stuff' ~/.bash_local.lsig.environ >/dev/null 2>&1
