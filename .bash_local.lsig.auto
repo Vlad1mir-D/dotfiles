@@ -1,8 +1,8 @@
 check_stuff_(){
 	local -A packages managers
 	packages=(
-	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop burnBX:cpuburn smartctl:smartmontools mc"
-	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm"
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop burnBX:cpuburn smartctl:smartmontools mc nc"
+	["linux"]="vim iotop strace dstat ethtool dmidecode lspci:pciutils iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm telnet"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup ccache memtest"
 	)
 	managers=(

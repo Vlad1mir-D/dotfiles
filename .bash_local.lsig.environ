@@ -47,13 +47,13 @@ deploy_environ_(){
 	local tmp="lnetw_environ_$lsig_env_ver_s_.tar.bz2"
 
 	cd ~/
-	rm $tmp 2>/dev/null
+	rm -f $tmp 2>/dev/null
 	mkdir $build
 	echo "$lsig_filelist_" | xargs cp -a --target-directory=$build/
 	chmod 700 $build
 	chmod -st $build
 	cd $build
-	[[ "$2" == "1" ]] && echo "
+	[[ "$2" == "0" ]] || echo "
 #added by deploy_environ_
 function up_environ_(){
 	. ~/.bash_local.lsig
@@ -62,10 +62,16 @@ function up_environ_(){
 }
 $(type check_environ_in_ | tail -n +2)
 " > .bash_local.lsig.environ
-	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
-	cd ..
-	scp -v $tmp $dst
-	rm -rf $tmp $build/
+	if [[ "$3" == "0" ]]; then
+		tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
+		cd ..
+		scp -v $tmp $dst
+		rm -f $tmp
+	else
+		scp -r ./ $dst
+		cd ../
+	fi
+	rm -rf $build/
 	cd $cwd
 }
 
