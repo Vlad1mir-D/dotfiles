@@ -25,6 +25,8 @@ push_environ_(){
 	fi
 	echo "pushing now...
 "
+
+	. ~/.bash_local.lsig.environ
 	local cwd=$PWD
 	local build="BUILDROOT"
 	local dst="ds:/home/amigo/data/www/lnetw.ru/"
@@ -69,6 +71,7 @@ check_environ_
 	scp -v $tmp $dst
 	rm -rf $tmp $build/
 	cd $cwd
+	. ~/.bash_local.lsig
 	return 0
 }
 
