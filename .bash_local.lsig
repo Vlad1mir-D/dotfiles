@@ -49,8 +49,10 @@ alias rmrf='rm -rf'
 alias cls="clear"
 #alias :q="exit"
 #alias ..="cd .."
-alias killa='killall -KILL'
-alias killk='kill -KILL'
+alias killa9='killall -9'
+alias kill9='kill -9'
+alias recfg='. ~/.bash_local.lsig'
+alias 'cd-'='cd -'
 
 alias sudo='sudo ' #to respect all aliases
 
@@ -108,18 +110,20 @@ function md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
 function refresh_PS_ {
-	if [[ -z $dlen_ ]]; then
-		dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+	local errcode=$?
+	[ $errcode -ne 0 ] && errcode=" \e[37m[\e[31m$errcode\e[37m]" || errcode=""
+	[[ -z $dlen_ ]] && dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
+	if [[ -z $tty_ ]]; then
+		tty_=$(tty)
+		tty_=${tty_/\/dev\//}
 	fi
 
 	local ucolor="\e[32m"
-	if [[ "${USER}" == "root" ]]; then
-		ucolor="\e[31m"
-	fi
+	[[ "${USER}" == "root" ]] && ucolor="\e[31m"
 	local hcolor="\e[32m"
 	[[ -n $SSH_TTY && -z $is_local_ ]] && hcolor="\e[36m"
 	local time="\e[$(($COLUMNS-$dlen_))G(\D{%a, %d.%m.%y %T %z})"
-	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m] ($(($SHLVL-1)):\#)$time"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m]$errcode \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ ($TERM != "linux") && !($TERM =~ "cons") ]] && termTitle="\[\e]0;[\u@\h:\w] $\a"
