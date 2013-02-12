@@ -7,9 +7,9 @@ lsig_env_ver_s_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2"-"$
 
 explore_environ_(){
 	local cwd=$PWD
-	cd $lsig_path_
+	cd "$lsig_path_"
 	export lsig_filelist_="$(find ./ -maxdepth 1 \! -path \*.hg\* \! -name \. \! -name \.bash_local.lsig.environ.ctrl)"
-	cd $cwd
+	cd "$cwd"
 	return 0
 }
 
@@ -40,9 +40,9 @@ $(type $up_function_name | tail -n +2)
 $up_function_name"
 	echo "$up_function_cnt" > $sh_src
 	scp -v $sh_src $dst$sh_tmp
-	rm $sh_src
+	rm "$sh_src"
 
-	cd $lsig_path_
+	cd "$lsig_path_"
 	explore_environ_
 	local check_environ_="
 #added by push_environ_
@@ -59,18 +59,18 @@ check_environ_(){
 echo
 check_environ_
 "
-	rm $tmp 2>/dev/null
+	rm "$tmp" 2>/dev/null
 	mkdir $build
 	find ./ -maxdepth 1 \! -name $build \! -name \. \! -name \.bash_local.lsig.environ.ctrl | xargs cp -a --target-directory=$build/
 	chmod 700 $build
 	chmod -st $build
-	cd $build
+	cd "$build"
 	echo "$check_environ_" >> .bash_local.lsig
 	tar vcfj ../$tmp --exclude-vcs --owner=root --group=root ./
 	cd ..
 	scp -v $tmp $dst
-	rm -rf $tmp $build/
-	cd $cwd
+	rm -rf "$tmp" "$build/"
+	cd "$cwd"
 	. ~/.bash_local.lsig
 	return 0
 }
