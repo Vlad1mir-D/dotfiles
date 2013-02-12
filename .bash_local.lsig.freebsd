@@ -12,14 +12,14 @@ if [[ $OSTYPE =~ "freebsd" ]]; then
 		local cwd=$PWD i
 		for i in `find /usr/ports -name work`; do
 			if [[ -d $i ]]; then
-				cd $i
+				cd "$i"
 				cd ../
 				echo "$PWD:"
 				make clean
 			fi
 		done
 
-		cd $cwd
+		cd "$cwd"
 	}
 
 	update_ports_() {
