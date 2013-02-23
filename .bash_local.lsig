@@ -51,7 +51,7 @@ alias cls="clear"
 #alias ..="cd .."
 alias killa9='killall -9'
 alias kill9='kill -9'
-alias recfg='. ~/.bash_local.lsig'
+alias recfg_='. ~/.bash_local.lsig'
 alias 'cd-'='cd -'
 
 alias sudo='sudo ' #to respect all aliases
