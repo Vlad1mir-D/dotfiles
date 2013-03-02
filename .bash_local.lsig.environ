@@ -25,12 +25,12 @@ up_environ_(){
 		echo "Failed to retrieve $src" 1>&2
 	fi
 
-	[[ "$1" == "1" ]] && rm .bash_local.lsig.environ
+	[[ "$1" == "1" ]] && rm -f .bash_local.lsig.environ
 
 	check_environ_in_ .bash_profile
 	check_environ_in_ .bashrc
 
-	[ -f "$dst" ] && rm "$dst"
+	[ -f "$dst" ] && rm -f "$dst"
 	cd "$cwd"
 }
 
