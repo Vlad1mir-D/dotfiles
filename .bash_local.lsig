@@ -115,7 +115,7 @@ function refresh_PS_ {
 	[[ -z $dlen_ ]] && dlen_=$(date +"%a, %d.%m.%y %T %z" | wc -m)
 	if [[ -z $tty_ ]]; then
 		tty_=$(tty)
-		tty_=${tty_/\/dev\//}
+		tty_="$$-${tty_/\/dev\//}"
 	fi
 
 	local ucolor="\e[32m"
