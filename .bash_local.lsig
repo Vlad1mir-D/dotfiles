@@ -51,7 +51,7 @@ alias cls="clear"
 #alias ..="cd .."
 alias killa9='killall -9'
 alias kill9='kill -9'
-alias recfg_='. ~/.bash_local.lsig'
+alias ucfg_='. ~/.bash_local.lsig'
 alias 'cd-'='cd -'
 
 alias sudo='sudo ' #to respect all aliases
@@ -60,6 +60,8 @@ type iptraf >/dev/null 2>&1
 [[ $? -eq 0 ]] && alias iptraf="TERM=linux iptraf"
 type iptraf-ng >/dev/null 2>&1
 [[ $? -eq 0 ]] && alias iptraf-ng="TERM=linux iptraf-ng"
+type vimx >/dev/null 2>&1
+[[ $? -eq 0 ]] && alias vim="vimx"
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
