@@ -1,5 +1,6 @@
 "Note when ~/.vimrc present the following is done automatically
 set nocompatible
+set clipboard=unnamed
 
 set wcm=<Tab>
 

@@ -1,16 +1,15 @@
 check_stuff_(){
-	local -A packages managers
+	local -A packages managers theJob
 	packages=(
-	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils"
-	["linux"]="vim iotop strace dstat ethtool iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm telnet parted systool:sysfsutils"
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils xauth"
+	["linux"]="vimx:vim-X11 iotop strace dstat ethtool iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm telnet parted systool:sysfsutils"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup ccache memtest"
 	)
 	managers=(
-	["yum:yum install"]="vim:vim-enhanced"
+	["yum:yum install"]="vim:vim-enhanced iptraf:iptraf-ng"
 	["apt-get:apt-get -m install"]="nettop: iptraf-ng: yum-utils:"
 	["portinstall:portinstall -cefrv"]="vim:vim-lite"
 	)
-	local theJob=()
 
 	local os package
 	for os in "${!packages[@]}"; do
@@ -19,20 +18,21 @@ check_stuff_(){
 				type ${package%:*} >/dev/null 2>&1
 				if [[ $? -gt 0 ]]; then
 					echo "package \"${package#*:}\" (#$os) not found - \"type ${package%:*}\" greater than 0"
-					theJob+=(${package#*:})
+					theJob[${package#*:}]=${package#*:}
 				fi
 			done
 		fi
 	done
 
-	if [ -n "$theJob" ]; then
+	if [[ -n "${theJob[@]}" ]]; then
 		echo
-		local sys sub cmd
+		local sys sub cmd key
 		for sys in "${!managers[@]}"; do
 			type ${sys%:*} >/dev/null 2>&1
 			if [[ $? -eq 0 ]]; then
 				for sub in ${managers[$sys]}; do
-					theJob=(${theJob[@]/${sub%:*}/${sub#*:}})
+					key=${sub%:*}
+					[[ ${theJob[$key]} == $key ]] && theJob[$key]=${theJob[$key]/$key/${sub#*:}}
 				done
 				cmd=${sys#*:}
 				break
