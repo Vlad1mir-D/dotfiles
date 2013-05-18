@@ -1,13 +1,13 @@
 check_stuff_(){
 	local -A packages managers theJob
 	packages=(
-	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop nettop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils xauth"
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils xauth"
 	["linux"]="vimx:vim-X11 iotop strace dstat ethtool iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm telnet parted systool:sysfsutils"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup ccache memtest"
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced iptraf:iptraf-ng"
-	["apt-get:apt-get -m install"]="nettop: iptraf-ng: yum-utils:"
+	["apt-get:apt-get -m install"]="iptraf-ng: yum-utils:"
 	["portinstall:portinstall -cefrv"]="vim:vim-lite"
 	)
 
