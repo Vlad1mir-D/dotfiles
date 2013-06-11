@@ -1,7 +1,7 @@
 #.bash_local excerpt
 
 lsig_path_="/home/lsig"
-lsig_env_ver_="$(hg tip -R $lsig_path_ | head -n1)"
+lsig_env_ver_="$(LANG=C hg tip -R $lsig_path_ | head -n1)"
 lsig_env_ver_d_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2}')"
 lsig_env_ver_s_="$(echo $lsig_env_ver_ | awk -F: '{gsub(/ /,"",$2); print $2"-"$3}')"
 
@@ -47,7 +47,7 @@ $up_function_name"
 	local check_environ_="
 #added by push_environ_
 lsig_filelist_=\"$lsig_filelist_\"
-lsig_env_ver_=\"$(hg tip | head -n1)\"
+lsig_env_ver_=\"$(LANG=C hg tip | head -n1)\"
 lsig_env_ver_d_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2}')\"
 lsig_env_ver_s_=\"\$(echo \$lsig_env_ver_ | awk -F: '{gsub(/ /,\"\",\$2); print \$2\"-\"\$3}')\"
 check_environ_(){
