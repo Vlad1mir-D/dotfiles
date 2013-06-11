@@ -57,8 +57,8 @@ deploy_environ_(){
 #added by deploy_environ_
 function up_environ_(){
 	. ~/.bash_local.lsig
-	check_environ_in_ .bash_profile
-	check_environ_in_ .bashrc
+	check_environ_in_ ~/.bash_profile
+	check_environ_in_ ~/.bashrc
 }
 $(type check_environ_in_ | tail -n +2)
 " > .bash_local.lsig.environ
