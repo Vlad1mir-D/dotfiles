@@ -1,7 +1,7 @@
 check_stuff_(){
 	local -A packages managers theJob
 	packages=(
-	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils xauth pigz pbzip2 lbzip2"
+	[".*"]="wget vim bash screen iostat:sysstat ifstat iftop htop atop burnBX:cpuburn smartctl:smartmontools mc nc dmidecode lsusb:usbutils lspci:pciutils xauth pigz pbzip2 lbzip2 pstree:psmisc lsof"
 	["linux"]="vimx:vim-X11 iotop strace dstat ethtool iptraf iptraf-ng yumdownloader:yum-utils memtester hdparm telnet parted systool:sysfsutils"
 	["freebsd"]="gnustat:coreutils gnu-watch portupgrade portdowngrade portaudit pkg-config pkg_cleanup ccache memtest"
 	)
