@@ -7,7 +7,7 @@ check_stuff_(){
 	)
 	managers=(
 	["yum:yum install"]="vim:vim-enhanced iptraf:iptraf-ng"
-	["apt-get:apt-get -m install"]="iptraf-ng: yum-utils:"
+	["apt-get:apt-get -m install"]="iptraf-ng: yum-utils: vim-X11:"
 	["portinstall:portinstall -cefrv"]="vim:vim-lite"
 	)
 
