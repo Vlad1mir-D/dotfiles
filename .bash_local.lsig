@@ -61,7 +61,7 @@ type iptraf >/dev/null 2>&1
 type iptraf-ng >/dev/null 2>&1
 [[ $? -eq 0 ]] && alias iptraf-ng="TERM=linux iptraf-ng"
 type vimx >/dev/null 2>&1
-[[ $? -eq 0 ]] && alias vim="vimx"
+[[ $? -eq 0 && -n $DISPLAY ]] && alias vim="vimx"
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
@@ -78,11 +78,11 @@ export GREP_OPTIONS="--color=auto"
 
 export EDITOR="vim"
 
-#X11 && X11Forwarding handling
-if [[ -z $DISPLAY ]]; then
-	[[ -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
-fi
-[[ -z $XAUTHORITY && -n $SSH_TTY ]] && export XAUTHORITY=$HOME/.Xauthority
+#X11 && X11Forwarding handling for buggy clients
+#if [[ -z $DISPLAY ]]; then
+#	[[ -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
+#fi
+#[[ -z $XAUTHORITY && -n $SSH_TTY ]] && export XAUTHORITY=$HOME/.Xauthority
 
 # setup color variables
 #color_is_on=
