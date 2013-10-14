@@ -51,6 +51,7 @@ alias cls="clear"
 #alias ..="cd .."
 alias killa9='killall -9'
 alias kill9='kill -9'
+alias ekill='kill -9 $$'
 alias ucfg_='. ~/.bash_local.lsig'
 alias 'cd-'='cd -'
 
