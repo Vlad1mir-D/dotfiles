@@ -144,6 +144,7 @@ function prompt_command_ {
 		stty $OLDSTTY
 		[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
 	fi
+	history -a; history -n
 }
 PROMPT_COMMAND=prompt_command_
 
