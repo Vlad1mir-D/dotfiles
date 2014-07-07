@@ -6,7 +6,7 @@ up_environ_(){
 	fi
 
 	local cwd=$PWD rnd=$RANDOM rights="" dst=
-	local src="https://www.lnetw.ru/environ.tar.bz2"
+	local src="https://www.lne.tw/environ.tar.bz2"
 	local dst="lnetw_environ_$rnd.tar.bz2"
 
 	cd ~
