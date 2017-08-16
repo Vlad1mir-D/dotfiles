@@ -19,26 +19,19 @@ shopt -s cdspell
 shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 
-#disable Ctrl+s freeze
+# prevent Ctrl+S from sending SIGSTOP
 stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
 if [[ $OSTYPE =~ "linux" || $OSTYPE =~ "cygwin" ]]; then
 	alias ls="ls --color=auto"
-	alias duh='du -h --max-depth=0'
-	alias free='free -m'
 
 	alias tracert="sudo traceroute -I"
 	alias tracert6="sudo traceroute6 -I"
-	alias scan_scsi_="echo \"- - -\" > /sys/class/scsi_host/host0/scan"
 elif [[ $OSTYPE =~ "freebsd" ]]; then
-	#bsd colorize
 	export CLICOLOR=1
 	export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
-
-	alias duh='du -h -d 0'
-	alias llw='ls -liahW'
 
 	alias tracert="traceroute -I"
 	alias tracert6="traceroute6 -I"
@@ -47,12 +40,6 @@ fi
 alias ll='ls -liahs'
 alias rmrf='rm -rf'
 alias cls="clear"
-#alias :q="exit"
-#alias ..="cd .."
-alias killa9='killall -9'
-alias kill9='kill -9'
-alias ekill='kill -9 $$'
-alias ucfg_='. ~/.bash_local.lsig'
 alias 'cd-'='cd -'
 
 alias sudo='sudo ' #to respect all aliases
@@ -65,7 +52,7 @@ type vimx >/dev/null 2>&1
 [[ $? -eq 0 && -n $DISPLAY ]] && alias vim="vimx"
 
 # User specific environment and startup programs
-PATH=$PATH:$HOME/.local/bin:$HOME/bin
+PATH=$HOME/.local/bin:$HOME/bin:$PATH
 export PATH
 
 # don't put duplicate lines in the history
@@ -74,41 +61,8 @@ export HISTCONTROL=ignoreboth,erasedups
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
 
-# grep colorize
-export GREP_OPTIONS="--color=auto"
-
 export EDITOR="vim"
 
-#X11 && X11Forwarding handling for buggy clients
-#if [[ -z $DISPLAY ]]; then
-#	[[ -n $SSH_TTY ]] && export DISPLAY="localhost:10.0" || export DISPLAY=":0"
-#fi
-#[[ -z $XAUTHORITY && -n $SSH_TTY ]] && export XAUTHORITY=$HOME/.Xauthority
-
-# setup color variables
-#color_is_on=
-#color_red=
-#color_green=
-#color_yellow=
-#color_blue=
-#color_white=
-#color_gray=
-#color_bg_red=
-#color_off=
-#if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-#	color_is_on=true
-#	color_red="$(/usr/bin/tput setaf 1)"
-#	color_green="$(/usr/bin/tput setaf 2)"
-#	color_yellow="$(/usr/bin/tput setaf 3)"
-#	color_blue="$(/usr/bin/tput setaf 6)"
-#	color_white="$(/usr/bin/tput setaf 7)"
-#	color_gray="$(/usr/bin/tput setaf 8)"
-#	color_off="$(/usr/bin/tput sgr0)"
-#	color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
-#	color_error_off="$(/usr/bin/tput sgr0)"
-#fi
-
-#some stuff
 function md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
@@ -152,13 +106,24 @@ if [ "$PS1" ]; then
 	complete -cf sudo
 fi
 
-# bash local
-ls -1 ~/.bash_local.lsig.* > /dev/null 2>&1
-if [ $? -eq 0  ]; then
-	for bash_local_ in ~/.bash_local.lsig.*; do . "$bash_local_"; done
-fi
-
 if [ -f ~/.bash_local ]; then
 	. ~/.bash_local
 fi
 
+bashrc_local_deploy_()
+{
+	if [[ -z $1 ]]; then
+		echo "$FUNCNAME requires filename not to be null" 1>&2;
+		return 1;
+	fi;
+	grep 'bashrc_local' "$1" > /dev/null 2>&1;
+	[ $? -eq 0 ] && return 0;
+	touch "$1";
+	if [ $? -eq 0 ]; then
+		local content="$(cat "$1" | grep -v Lsig_Check)";
+		echo "$content
+[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
+" > "$1";
+	fi;
+	return $?
+}
