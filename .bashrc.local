@@ -118,13 +118,13 @@ bashrc_local_deploy_()
 		echo "$FUNCNAME requires filename not to be null" 1>&2;
 		return 1;
 	fi;
-	grep 'bashrc_local' "$1" > /dev/null 2>&1;
+	grep 'bashrc.local' "$1" > /dev/null 2>&1;
 	[ $? -eq 0 ] && return 0;
 	touch "$1";
 	if [ $? -eq 0 ]; then
-		local content="$(cat "$1" | grep -v Lsig_Check)";
+		local content="$(cat "$1" | grep -v bashrc.local)";
 		echo "$content
-[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
+[[ -e ~/.bashrc.local ]] && . ~/.bashrc.local
 " > "$1";
 	fi;
 	return $?
