@@ -207,6 +207,7 @@ au BufWritePost *.gpg u
 au BufRead,BufNewFile .bash_local* :set ft=sh
 au BufRead,BufNewFile */etc/nginx/* :set ft=nginx
 au BufRead,BufNewFile */etc/named.conf* :set ft=named
+au BufRead,BufNewFile *.jsm :set ft=javascript
 
 filetype on
 filetype plugin on
