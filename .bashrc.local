@@ -68,6 +68,14 @@ export EDITOR="vim"
 function md(){ mkdir -p "$@" && cd "$@"; }
 [[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
 
+function memempt(){
+	[[ "$1" -eq 1 ]] && sync
+	[[ "$1" -eq 2 ]] || echo 1 > /proc/sys/vm/compact_memory
+	echo 1 > /proc/sys/vm/drop_caches
+	[[ "$1" -eq 2 ]] || echo 1 > /proc/sys/vm/compact_memory
+	echo 1 > /proc/sys/vm/drop_caches
+}
+
 function refresh_PS_ {
 	local errcode=$?
 	[ $errcode -ne 0 ] && errcode=" \e[37m[\e[31m$errcode\e[37m]" || errcode=""
