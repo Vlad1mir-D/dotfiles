@@ -66,7 +66,7 @@ HISTSIZE=1000000
 export EDITOR="vim"
 
 function md(){ mkdir -p "$@" && cd "$@"; }
-[[ $OSTYPE =~ "cygwin" ]] || ps(){ /bin/ps "$@" -ww; }
+[[ $OSTYPE =~ "cygwin" ]] || ps(){ env ps "$@" -ww; }
 
 function memempt(){
 	[[ "$1" -eq 1 ]] && sync
