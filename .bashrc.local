@@ -90,7 +90,8 @@ function refresh_PS_ {
 	local hcolor="\e[32m"
 	[[ -n $SSH_TTY && -z $is_local_ ]] && hcolor="\e[36m"
 	local time="\e[$(($COLUMNS-$dlen_))G(\D{%a, %d.%m.%y %T %z})"
-	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m]$errcode \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
+	local gitPs="$(__git_ps1 " /%s/")"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m]${errcode}${gitPs} \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ ($TERM != "linux") && !($TERM =~ "cons") ]] && termTitle="\[\e]0;[\u@\h:\w] $\a"
@@ -118,6 +119,11 @@ fi
 
 if [ -f ~/.bash_local ]; then
 	. ~/.bash_local
+fi
+
+if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
+	. /usr/share/git-core/contrib/completion/git-prompt.sh
+	export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWUPSTREAM=1 GIT_PS1_SHOWCOLORHINTS=1
 fi
 
 bashrc_local_deploy_()
