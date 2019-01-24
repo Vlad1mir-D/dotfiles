@@ -94,7 +94,7 @@ function refresh_PS_ {
 	if [ "x$(type -t __git_ps1 2>/dev/null)" == "xfunction" ]; then
 		gitPs="$(__git_ps1 " /%s/")"
 	fi
-	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m]${errcode}${gitPs} \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
+	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m$]${errcode}${gitPs} \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}
 	local termTitle=""
 	[[ ($TERM != "linux") && !($TERM =~ "cons") ]] && termTitle="\[\e]0;[\u@\h:\w] $\a"
