@@ -146,3 +146,9 @@ bashrc_local_deploy_()
 	fi;
 	return $?
 }
+bashrc_local_deploy_auto(){
+	echo "Updating ~/.bashrc..."
+	bashrc_local_deploy_ ~/.bashrc
+	echo "Updating ~/.bash_profile..."
+	bashrc_local_deploy_ ~/.bash_profile
+}
