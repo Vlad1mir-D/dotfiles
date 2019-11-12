@@ -62,6 +62,7 @@ export HISTCONTROL=ignoreboth,erasedups
 # set history length
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
+HISTTIMEFORMAT="%F %T: "
 
 export EDITOR="vim"
 
