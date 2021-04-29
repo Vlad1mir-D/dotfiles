@@ -58,7 +58,7 @@ PATH=$HOME/.local/bin:$HOME/bin:$PATH
 export PATH
 
 # don't put duplicate lines in the history
-export HISTCONTROL=ignoreboth,erasedups
+export HISTCONTROL=ignoreboth:erasedups
 # set history length
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
@@ -93,7 +93,7 @@ function refresh_PS_ {
 	local time="\e[$(($COLUMNS-$dlen_))G(\D{%a, %d.%m.%y %T %z})"
 	local gitPs=""
 	if [ "x$(type -t __git_ps1 2>/dev/null)" == "xfunction" ]; then
-		gitPs="$(__git_ps1 " /%s/")"
+		gitPs="$(__git_ps1 " %s")"
 	fi
 	local mainPrompt="[${ucolor}\u${hcolor}@\h:\e[33m\w\e[0m$]${errcode}${gitPs} \e[37m|$tty_| \e[0m($(($SHLVL-1)):\#)$time"
 	local flen=${#mainPrompt}

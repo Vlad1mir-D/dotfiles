@@ -28,14 +28,15 @@ if v:version >= 700
     "for me to enable by default
     "set cursorline   "highlight current line
     "set cursorcolumn "highlight current column
+    "set number
 endif
 
 "allow backspacing over everything in insert mode
 set bs=2
-set viminfo='100,h
+set viminfo='5000,h
 "set viminfo='20,\"500    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
-set history=50          " keep 50 lines of command line history
+set history=5000        " keep 5000 lines of command line history
 "Allow switching buffers without writing to disk
 set hidden
 "Always show cursor position
@@ -84,6 +85,8 @@ set noautoindent smartindent
 "set nojoinspaces
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType groovy setlocal ts=4 sts=4 sw=4 expandtab
+au BufRead,BufNewFile *.hcl :set ts=2 sts=2 sw=2 expandtab syntax=terraform
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Dark background
