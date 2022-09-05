@@ -86,7 +86,10 @@ set noautoindent smartindent
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType groovy setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType cs setlocal ts=4 sts=4 sw=4 expandtab
 au BufRead,BufNewFile *.hcl :set ts=2 sts=2 sw=2 expandtab syntax=terraform
+au BufRead,BufNewFile Dockerfile* :set syntax=dockerfile
+au BufRead,BufNewFile *.tsx :set syntax=typescript
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Dark background
