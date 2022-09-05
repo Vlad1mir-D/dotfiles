@@ -31,7 +31,7 @@ if [[ $OSTYPE =~ "linux" || $OSTYPE =~ "cygwin" ]]; then
 
 	alias tracert="sudo traceroute -I"
 	alias tracert6="sudo traceroute6 -I"
-elif [[ $OSTYPE =~ "freebsd" ]]; then
+elif [[ $OSTYPE =~ "freebsd" || $OSTYPE =~ "darwin" ]]; then
 	export CLICOLOR=1
 	export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
 
