@@ -134,10 +134,10 @@ if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh -o \
 		. /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
 	fi
 	export GIT_PS1_HIDE_IF_PWD_IGNORED=1
-	export GIT_PS1_SHOWDIRTYSTATE=1
+	#export GIT_PS1_SHOWDIRTYSTATE=1
 	export GIT_PS1_SHOWSTASHSTATE=1
 	export GIT_PS1_SHOWCOLORHINTS=1
-	export GIT_PS1_SHOWUNTRACKEDFILES=1
+	#export GIT_PS1_SHOWUNTRACKEDFILES=1
 	export GIT_PS1_DESCRIBE_STYLE="branch"
 	export GIT_PS1_SHOWUPSTREAM="verbose"
 fi
