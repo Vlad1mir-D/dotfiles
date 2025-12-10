@@ -133,7 +133,7 @@ if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh -o \
 	if [ -x /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]; then
 		. /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
 	fi
-	export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWCOLORHINTS=1 GIT_PS1_SHOWUNTRACKEDFILES=1 GIT_PS1_DESCRIBE_STYLE="branch" GIT_PS1_SHOWUPSTREAM="verbose"
+	export GIT_PS1_HIDE_IF_PWD_IGNORED=1 GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWCOLORHINTS=1 GIT_PS1_SHOWUNTRACKEDFILES=1 GIT_PS1_DESCRIBE_STYLE="branch" GIT_PS1_SHOWUPSTREAM="verbose"
 fi
 
 bashrc_local_deploy_()
