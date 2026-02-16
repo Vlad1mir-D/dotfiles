@@ -12,6 +12,7 @@ menu Encoding.koi8-u :e ++enc=koi8-u<CR> " ++ff=unix<CR>
 map <F8> :emenu Encoding.<TAB>
 
 set fileencodings=utf-8,cp1251,koi8-r,cp866,koi8-u
+set mmp=500000
 
 "Set terminal title to filename
 set title
