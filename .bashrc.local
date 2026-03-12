@@ -116,6 +116,7 @@ function prompt_command_ {
 	history -a; history -n
 }
 PROMPT_COMMAND=prompt_command_
+#PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; } prompt_command_"
 
 if [ "$PS1" ]; then
 	complete -cf sudo
