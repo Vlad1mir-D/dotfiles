@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# if .bashrc executed from .bash_profile do not do the job twice
-[[ ${#BASH_SOURCE[@]} == 3 && ${BASH_SOURCE[2]} =~ "bash_profile" && ${BASH_SOURCE[1]} =~ "bashrc" ]] && return
+# Avoid double-loading when sourced more than once in the same shell.
+[[ -n "${__BASHRC_LOCAL_SOURCED:-}" ]] && return
+__BASHRC_LOCAL_SOURCED=1
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -22,7 +18,7 @@ shopt -s cmdhist
 shopt -s no_empty_cmd_completion
 
 # prevent Ctrl+S from sending SIGSTOP
-stty -ixon
+tty -s && stty -ixon
 # this is for delete words by ^W
 tty -s && stty werase ^- 2>/dev/null
 
@@ -115,8 +111,12 @@ function prompt_command_ {
 	fi
 	history -a; history -n
 }
-PROMPT_COMMAND=prompt_command_
+#PROMPT_COMMAND=prompt_command_
 #PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; } prompt_command_"
+case ";${PROMPT_COMMAND:-};" in
+	*";prompt_command_;"*) ;;
+	*) PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }prompt_command_" ;;
+esac
 
 if [ "$PS1" ]; then
 	complete -cf sudo
@@ -163,6 +163,4 @@ bashrc_local_deploy_()
 bashrc_local_deploy_auto(){
 	echo "Updating ~/.bashrc..."
 	bashrc_local_deploy_ ~/.bashrc
-	echo "Updating ~/.bash_profile..."
-	bashrc_local_deploy_ ~/.bash_profile
 }
