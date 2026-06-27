@@ -115,7 +115,7 @@ function prompt_command_ {
 #PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; } prompt_command_"
 case ";${PROMPT_COMMAND:-};" in
 	*";prompt_command_;"*) ;;
-	*) PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }prompt_command_" ;;
+	*) PROMPT_COMMAND="prompt_command_${PROMPT_COMMAND:+; $PROMPT_COMMAND}" ;;
 esac
 
 if [ "$PS1" ]; then
