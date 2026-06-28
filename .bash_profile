@@ -23,7 +23,7 @@ export AZURE_CORE_COLLECT_TELEMETRY=0; # Microsoft Azure CLI
 export DISABLE_TELEMETRY=1 # https://code.claude.com/docs/en/env-vars.md
 
 export HOMEBREW_NO_ANALYTICS=1
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null || :
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
@@ -55,7 +55,7 @@ export TG_TF_PATH=terraform
 
 # common
 # The next line updates PATH for Nebius Private CLI.
-if [ -f '/Users/wladimir/.config/newbius/path.bash.inc' ]; then source '/Users/wladimir/.config/newbius/path.bash.inc'; fi
+if [ -f "$HOME/.config/newbius/path.bash.inc" ]; then source "$HOME/.config/newbius/path.bash.inc"; fi
 
 # ik8s
 # https://docs.nebius.dev/en/infrak8s/ik8s-platform/platform-binary#how-to-run

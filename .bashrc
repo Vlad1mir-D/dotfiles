@@ -9,7 +9,7 @@ if [[ $- == *i* && -z "${__BASH_PROFILE_SOURCED:-}" && -e ~/.bash_profile ]]; th
 fi
 
 #BASH_PREEXEC_SRC="/opt/homebrew/etc/profile.d/bash-preexec.sh"
-BASH_PREEXEC_SRC="/Users/wladimir/soft/bash-preexec/bash-preexec.sh"
+BASH_PREEXEC_SRC="$HOME/soft/bash-preexec/bash-preexec.sh"
 [ -f "${BASH_PREEXEC_SRC}" ] && . "${BASH_PREEXEC_SRC}"
 
 # https://github.com/akinomyoga/ble.sh#13-set-up-bashrc
@@ -18,10 +18,10 @@ BASH_PREEXEC_SRC="/Users/wladimir/soft/bash-preexec/bash-preexec.sh"
 
 [[ -e ~/.bashrc.local ]] && . ~/.bashrc.local
 
-#[[ -t 0 ]] && eval "$(atuin pty-proxy init bash)"
-[[ -t 0 ]] && eval "$(atuin init bash)"
+#[[ -t 0 ]] && eval "$(atuin pty-proxy init bash)" 2>/dev/null || :
+[[ -t 0 ]] && eval "$(atuin init bash)" 2>/dev/null || :
 
-[ -x $HOMEBREW_PREFIX/share/forgit/forgit.plugin.sh ] && source $HOMEBREW_PREFIX/share/forgit/forgit.plugin.sh
+[ -x "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.sh" ] && source "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.sh"
 
 #000_bash_completion_compat.bash
 #aria2c
