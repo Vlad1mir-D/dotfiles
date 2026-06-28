@@ -25,8 +25,6 @@ BASH_PREEXEC_SRC="$HOME/soft/bash-preexec/bash-preexec.sh"
 
 #000_bash_completion_compat.bash
 #aria2c
-#atuin
-#aws_bash_completer
 #brew
 #buf
 #fd
@@ -41,13 +39,14 @@ BASH_PREEXEC_SRC="$HOME/soft/bash-preexec/bash-preexec.sh"
 #jf
 #mas
 #npm
-#orbctl
 #pipx
 #rg
 #timoni
 #uv
 #uvx
 homebrew_bash_completions=$(cat - <<EOF
+atuin
+aws_bash_completer
 git-completion.bash
 git-forgit
 git-lfs
@@ -55,6 +54,7 @@ kubectl
 kubectx
 kubens
 npc
+orbctl
 procs
 tig-completion.bash
 yq
@@ -80,6 +80,11 @@ _np_completion()
 	COMPREPLY=( $(compgen -W "$(npc profile list | awk '{print $1}')" -- $curr_arg ) );
 }
 complete -F _np_completion np
+
+for npc_alias in npc{l,t,p,td,pd}; do
+	complete -o default -F __start_npc "$npc_alias"
+	unset npc_alias
+done
 
 # Add this line at the end of .bashrc:
 #[[ ! ${BLE_VERSION-} ]] || ble-attach
